@@ -4,14 +4,14 @@ package backend;
 import java.sql.*;
 
 
-public class database {
+public class Database {
     private int totalRecords;
     // change below
     String jdbcURL = "jdbc:mysql://localhost:3306/catalog";
-    String username = "root";
-    String password = "";
+    String username = "postgres";
+    String password = "0000";
     //
-    public database() {
+    public Database() {
     }
     public int getTotalRecords() {
        return totalRecords;
@@ -34,6 +34,8 @@ public class database {
 
         } catch (SQLException e){
             e.printStackTrace();
+        }
+        public void createNewDatabase(String name){
         }
 
     }
