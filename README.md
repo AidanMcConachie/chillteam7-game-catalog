@@ -2,9 +2,9 @@
 
 # Coding Practices
 ## Comments
-1) Descriptive comments for functions, classes, etc.
+1) Descriptive comments for functions, classes, etc. (if it isn't intuitive)
 ```java
-// Adds Two numbers
+// Adds two numbers
 public void addNumsFunction(int num1, int num2){}
 ```
 2) Comments for code developed by others. Please prepend your name
