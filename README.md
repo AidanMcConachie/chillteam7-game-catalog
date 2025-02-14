@@ -15,7 +15,7 @@ System.out.println(var1);
 ## Classes and Objects
 If something can be a class, and should be a class, implement it as a class!
 
-## Master Branch V.S. Other branches
+## Master Branch V.S. Other Branches
 - If you want to implement simple fixes, or add commments, commit and push to main
 - If you are working on a large feature, such as a user story, push to another branch
 
