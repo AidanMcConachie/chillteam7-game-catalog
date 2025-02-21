@@ -7,7 +7,7 @@ import java.sql.*;
 public class Database {
     private int totalRecords;
     // change below
-    String jdbcURL = "jdbc:mysql://localhost:3306/catalog";
+    String jdbcURL = "jdbc:postgresql://localhost:3306/catalog";
     String username = "postgres";
     String password = "0000";
     //
@@ -17,12 +17,12 @@ public class Database {
        return totalRecords;
     }
     // Can add more params if needed
-    public void appendToCatalog(String name, String genre, String id, String description) {
+    public void addGame(String name, String genre, String id, String description) {
         try{
             Connection connection = DriverManager.getConnection(jdbcURL, username, password);
             String query = "INSERT INTO catalog (name, genre, id, description) VALUES (?, ?, ?, ?)"; // formatting is done below
 
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(query); // might just be Statement
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, genre);
             preparedStatement.setString(3, id);
@@ -30,13 +30,11 @@ public class Database {
             preparedStatement.executeUpdate(); // this might just be execute
 
             preparedStatement.close();
+            totalRecords++;
             connection.close();
 
         } catch (SQLException e){
             e.printStackTrace();
         }
-        public void createNewDatabase(String name){
-        }
-
     }
 }
