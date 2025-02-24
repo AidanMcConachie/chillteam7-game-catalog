@@ -1,7 +1,11 @@
 package backend;
 
 // Might need maven for PostGreSQL
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 
 public class Database {
