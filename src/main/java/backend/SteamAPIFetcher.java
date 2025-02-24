@@ -34,6 +34,7 @@ public class SteamAPIFetcher {
         String headerImage = data.getString("header_image"); // more rectangular
         JSONArray developers = data.getJSONArray("developers");
         JSONArray publishers = data.getJSONArray("publishers");
+        // There might be a better way to implement this below to add to database
         info[0] = id;
         info[1] = name;
         info[2] = description;
@@ -42,4 +43,5 @@ public class SteamAPIFetcher {
         info[5] = publishers.toString();
         return info;
     }
+    // Perhaps we have a toString method, but not ideal for database fetching
 }

@@ -19,7 +19,7 @@ If something can be a class, and should be a class, implement it as a class!
 - If you want to implement simple fixes, or add commments, commit and push to main
 - If you are working on a large feature, such as a user story, push to another branch
 
-# Project Structure
+# Simplified Project Structure
 ```
 game-catalog/
 ├── src/
