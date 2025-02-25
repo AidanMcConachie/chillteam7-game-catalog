@@ -44,4 +44,8 @@ public class SteamAPIFetcher {
         return info;
     }
     // Perhaps we have a toString method, but not ideal for database fetching
+    @Override
+    public String toString() {
+        return Arrays.toString(info);
+    }
 }
