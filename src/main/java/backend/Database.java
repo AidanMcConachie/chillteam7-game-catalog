@@ -21,17 +21,19 @@ public class Database {
        return totalRecords;
     }
     // Can add more params if needed
-    public void addGame(String name, String genre, String id, String description) {
+    public void addGame(String id, String name, String description, String headerImage, String genres, String developers, String publishers) {
         try{
             Connection connection = DriverManager.getConnection(jdbcURL, username, password);
-            String query = "INSERT INTO catalog (name, genre, id, description) VALUES (?, ?, ?, ?)"; // formatting is done below
+            String query = "INSERT INTO catalog (id, name, description, headerImage, genres, developers, publishers) VALUES (?, ?, ?, ?, ?, ?)"; // formatting is done below
 
             PreparedStatement preparedStatement = connection.prepareStatement(query); // might just be Statement
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, genre);
-            preparedStatement.setString(3, id);
-            preparedStatement.setString(4, description);
-            preparedStatement.executeUpdate(); // this might just be execute
+            preparedStatement.setString(1, id);
+            preparedStatement.setString(2, name);
+            preparedStatement.setString(3, description);
+            preparedStatement.setString(4, headerImage);
+            preparedStatement.setString(5, genres);
+            preparedStatement.setString(6, developers);
+            preparedStatement.executeUpdate(); // this might just be "execute"
 
             preparedStatement.close();
             totalRecords++;
