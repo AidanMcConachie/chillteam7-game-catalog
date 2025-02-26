@@ -11,9 +11,7 @@ import java.sql.SQLException;
 public class Database {
     private int totalRecords;
     // change below
-    String jdbcURL = "jdbc:postgresql://localhost:3306/catalog";
-    String username = "postgres";
-    String password = "0000";
+    String jdbcURL = "jdbc:sqlite:database/catalog.db";
     //
     public Database() {
     }
@@ -21,10 +19,15 @@ public class Database {
        return totalRecords;
     }
     // Can add more params if needed
-    public void addGame(String id, String name, String description, String headerImage, String genres, String developers, String publishers) {
+    public void createDatabase() throws SQLException { // Only needs to be run once, perhaps when the user first loads up the UI?
+        try(Connection connection = DriverManager.getConnection(jdbcURL)){
+            connection.createStatement().execute("CREATE TABLE catalog (id, name, description, headerImage, genres, developers, publishers)");
+        }
+    }
+    public void addGame(String id, String name, String description, String headerImage, String genres, String developers, String publishers) { // Perhaps we make this a String[]?
         try{
-            Connection connection = DriverManager.getConnection(jdbcURL, username, password);
-            String query = "INSERT INTO catalog (id, name, description, headerImage, genres, developers, publishers) VALUES (?, ?, ?, ?, ?, ?)"; // formatting is done below
+            Connection connection = DriverManager.getConnection(jdbcURL);
+            String query = "INSERT INTO catalog (id, name, description, headerImage, genres, developers, publishers) VALUES (?, ?, ?, ?, ?, ?, ?)"; // formatting is done below
 
             PreparedStatement preparedStatement = connection.prepareStatement(query); // might just be Statement
             preparedStatement.setString(1, id);
