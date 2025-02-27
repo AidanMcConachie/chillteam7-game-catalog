@@ -11,7 +11,8 @@ import java.sql.SQLException;
 public class Database {
     private int totalRecords;
     // change below
-    String jdbcURL = "jdbc:sqlite:database/catalog.db";
+    String catalogJdbcURL = "jdbc:sqlite:database/catalog.db";
+    String reviewJDBCURL = "jdbc:sqlite:database/reviews.db";
     //
     public Database() {
     }
@@ -19,14 +20,14 @@ public class Database {
        return totalRecords;
     }
     // Can add more params if needed
-    public void createDatabase() throws SQLException { // Only needs to be run once, perhaps when the user first loads up the UI?
-        try(Connection connection = DriverManager.getConnection(jdbcURL)){
+    public void createCatalogDatabase() throws SQLException { // Only needs to be run once, perhaps when the user first loads up the UI?
+        try(Connection connection = DriverManager.getConnection(catalogJdbcURL)){
             connection.createStatement().execute("CREATE TABLE catalog (id, name, description, headerImage, genres, developers, publishers)");
         }
     }
     public void addGame(String id, String name, String description, String headerImage, String genres, String developers, String publishers) { // Perhaps we make this a String[]?
         try{
-            Connection connection = DriverManager.getConnection(jdbcURL);
+            Connection connection = DriverManager.getConnection(catalogJdbcURL);
             String query = "INSERT INTO catalog (id, name, description, headerImage, genres, developers, publishers) VALUES (?, ?, ?, ?, ?, ?, ?)"; // formatting is done below
 
             PreparedStatement preparedStatement = connection.prepareStatement(query); // might just be Statement
@@ -45,5 +46,12 @@ public class Database {
         } catch (SQLException e){
             e.printStackTrace();
         }
+    }
+    public void createReviewDatabase(int steamID) throws SQLException {
+        try(Connection connection = DriverManager.getConnection(catalogJdbcURL)){
+            connection.createStatement().execute("CREATE TABLE " + steamID + " (user, datePosted)"); // I don't really know if this works as expected
+        }
+    }
+    public void addReview(String steamID, String datePosted) throws SQLException {
     }
 }
