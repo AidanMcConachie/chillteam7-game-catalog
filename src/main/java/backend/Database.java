@@ -25,18 +25,18 @@ public class Database {
             connection.createStatement().execute("CREATE TABLE catalog (id, name, description, headerImage, genres, developers, publishers)");
         }
     }
-    public void addGame(String id, String name, String description, String headerImage, String genres, String developers, String publishers) { // Perhaps we make this a String[]?
+    public void addGame(String[] dbArguments) { // dbArguments: id, name, description, headerIMage, generes, developers, publishers
         try{
             Connection connection = DriverManager.getConnection(catalogJdbcURL);
             String query = "INSERT INTO catalog (id, name, description, headerImage, genres, developers, publishers) VALUES (?, ?, ?, ?, ?, ?, ?)"; // formatting is done below
 
             PreparedStatement preparedStatement = connection.prepareStatement(query); // might just be Statement
-            preparedStatement.setString(1, id);
-            preparedStatement.setString(2, name);
-            preparedStatement.setString(3, description);
-            preparedStatement.setString(4, headerImage);
-            preparedStatement.setString(5, genres);
-            preparedStatement.setString(6, developers);
+            preparedStatement.setString(1, dbArguments[0]);
+            preparedStatement.setString(2, dbArguments[1]);
+            preparedStatement.setString(3, dbArguments[2]);
+            preparedStatement.setString(4, dbArguments[3]);
+            preparedStatement.setString(5, dbArguments[4]);
+            preparedStatement.setString(6, dbArguments[5]);
             preparedStatement.executeUpdate(); // this might just be "execute"
 
             preparedStatement.close();
