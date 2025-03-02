@@ -35,8 +35,8 @@ public class Database {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        public void createNewDatabase(String name){
-        }
+//        public void createNewDatabase(String name){
+//        }
 
     }
 }

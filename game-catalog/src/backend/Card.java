@@ -5,13 +5,14 @@ public class Card {
     public String genre;
     public String id;
     public String description;
-    private String imageUrl; //maybe use when it works ?
+    public String imageUrl; //maybe use when it works ?
 
     public Card(String name, String genre, String id, String description, String imageUrl) {
         this.name = name;
         this.genre = genre;
         this.id = id;
         this.description = description;
+        this.imageUrl = imageUrl;
     }
 
     @Override
