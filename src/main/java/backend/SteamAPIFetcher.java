@@ -66,7 +66,7 @@ public class SteamAPIFetcher {
             price_final = ((float) price_cents) / 100;
         }
         // There might be a better way to implement this below to add to database
-        info[0] = id;
+        info[0] = id; // THIS IS REDUNDANT BUT I DON'T CARE!!!!! (maybe use for sorting?)
         info[1] = name;
         info[2] = description;
         info[3] = headerImage;
