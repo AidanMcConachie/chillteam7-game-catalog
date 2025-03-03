@@ -5,6 +5,7 @@ import backend.Card;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
+import javax.swing.ImageIcon;
 
 public class CardPanel extends JPanel {
     private Card card;
@@ -15,7 +16,7 @@ public class CardPanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(150, 250)); // Adjust as needed
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        this.setBackground(Color.WHITE);
+//        this.setBackground(Color.WHITE);
 
         // Title label
         JLabel titleLabel = new JLabel(card.name, SwingConstants.CENTER);
@@ -51,15 +52,38 @@ public class CardPanel extends JPanel {
 
     private void setImage(JLabel imageLabel, String imageUrl) {
         try {
-            if (imageUrl != null && !imageUrl.isEmpty()) {
+            if (imageUrl != null || !imageUrl.isEmpty()) {
                 ImageIcon icon = new ImageIcon(new URL(imageUrl));
                 Image img = icon.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH);
+
+                SwingUtilities.invokeLater(() -> imageLabel.setIcon(new ImageIcon(img)));
                 imageLabel.setIcon(new ImageIcon(img));
             } else {
                 imageLabel.setText("No Image Available");
+                System.out.println("No Image Available");
             }
         } catch (Exception e) {
             imageLabel.setText("Error Loading Image");
         }
     }
+
+
+//    private void setImage(JLabel imageLabel, String url) {
+//        try{
+//            // get the url
+//            URL imageUrl = new URL(url);
+//
+//            // load image from url
+//            ImageIcon icon = new ImageIcon(imageUrl);
+//
+//            // modify JLabel and set image
+//            imageLabel.setIcon(icon);
+//
+//        }
+//        catch (Exception e){
+//            imageLabel.setText("Error Loading Image");
+//        }
+//
+//
+//    }
 }
