@@ -1,6 +1,7 @@
 package backend;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONString;
 
@@ -18,6 +19,7 @@ public class SteamAPIFetcher {
     String[] info = new String[8];
 
     public String[] fetchGameData(int steamID) throws Exception{
+        JSONObject price; // for error handling later
         URL url = new URL("https://store.steampowered.com/api/appdetails?appids=" + steamID);
         StringBuilder stringBuilder = new StringBuilder();
         try(InputStream input = url.openStream()) {
@@ -37,7 +39,11 @@ public class SteamAPIFetcher {
         String name = data.getString("name");
         String description = data.getString("short_description");
         String headerImage = data.getString("header_image"); // more rectangular
-        JSONObject price = data.getJSONObject("price_overview"); // TODO: Error handling here
+        try {
+            price = data.getJSONObject("price_overview"); // TODO: Error handling here
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         JSONArray genres = data.getJSONArray("genres");
         JSONArray developers = data.getJSONArray("developers");
         JSONArray publishers = data.getJSONArray("publishers");
@@ -48,7 +54,6 @@ public class SteamAPIFetcher {
             JSONObject genre = genres.getJSONObject(i);
             genreArray.put(genre.getString("description"));
         }
-        // price formatting
         int price_cents = price.getInt("final");
         float price_final = ((float) price_cents) / 100;
         // There might be a better way to implement this below to add to database

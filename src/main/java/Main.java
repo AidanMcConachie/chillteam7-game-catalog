@@ -10,8 +10,7 @@ public class Main {
         Database database = new Database();
         database.clearDatabase();
         database.addGame(413150);
-        String info = database.fetchGameInfo(413150, "name");
-        System.out.println(info);
+        String[] info = database.fetchAllGameInfo(413150);
     }
 
 }

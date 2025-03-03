@@ -59,7 +59,7 @@ public class Database {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, steamid);
             preparedStatement.executeUpdate();
-            totalRecords--;
+            totalRecords--; // might not be best practice
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -70,10 +70,25 @@ public class Database {
         try {
             Connection connection = DriverManager.getConnection(catalogJdbcURL);
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            //preparedStatement.setInt(1, steamid);
+            preparedStatement.setString(1, steamid + "");
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getString(component);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+    public String[] fetchAllGameInfo(int steamid) {
+        String query = "SELECT * FROM catalog WHERE id = ?";
+        try{
+            Connection connection = DriverManager.getConnection(catalogJdbcURL);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, steamid + "");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                return new String[]{resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7)};
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -86,6 +101,7 @@ public class Database {
         try (Connection connection = DriverManager.getConnection(catalogJdbcURL)) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.executeUpdate();
+            totalRecords=0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
