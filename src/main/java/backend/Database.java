@@ -96,7 +96,7 @@ public class Database {
             preparedStatement.setString(1, steamid + "");
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
-                return new String[]{resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7)};
+                return new String[]{resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8)};
             }
             connection.close(); // again this probably isn't ideal
         } catch (SQLException e) {
