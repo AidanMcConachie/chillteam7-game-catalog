@@ -66,6 +66,7 @@ public class Database {
             preparedStatement.setInt(1, steamid);
             preparedStatement.executeUpdate();
             totalRecords--; // might not be best practice
+            connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -81,6 +82,7 @@ public class Database {
             if (resultSet.next()) {
                 return resultSet.getString(component);
             }
+            connection.close(); // this probably isn't correct because it's out of scope
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -96,6 +98,7 @@ public class Database {
             if(resultSet.next()) {
                 return new String[]{resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7)};
             }
+            connection.close(); // again this probably isn't ideal
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -107,6 +110,7 @@ public class Database {
         try (Connection connection = DriverManager.getConnection(catalogJdbcURL)) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.executeUpdate();
+            connection.close();
             totalRecords=0;
         } catch (SQLException e) {
             e.printStackTrace();
