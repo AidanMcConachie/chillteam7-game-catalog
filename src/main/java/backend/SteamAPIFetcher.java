@@ -1,3 +1,7 @@
+/*
+YOU SHOULD NOT BE CALLING THESE METHODS! SEE DATABASE.JAVA
+ */
+
 package backend;
 
 import org.json.JSONArray;
@@ -39,10 +43,11 @@ public class SteamAPIFetcher {
         String name = data.getString("name");
         String description = data.getString("short_description");
         String headerImage = data.getString("header_image"); // more rectangular
+        // Price error handling might need to be redone
         try {
-            price = data.getJSONObject("price_overview"); // TODO: Error handling here
+            price = data.getJSONObject("price_overview");
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            price = null;
         }
         JSONArray genres = data.getJSONArray("genres");
         JSONArray developers = data.getJSONArray("developers");
@@ -54,8 +59,12 @@ public class SteamAPIFetcher {
             JSONObject genre = genres.getJSONObject(i);
             genreArray.put(genre.getString("description"));
         }
-        int price_cents = price.getInt("final");
-        float price_final = ((float) price_cents) / 100;
+        // This approach is not ideal, but it works. Should optimize it for later
+        float price_final = 0;
+        if(price != null) {
+            int price_cents = price.getInt("final");
+            price_final = ((float) price_cents) / 100;
+        }
         // There might be a better way to implement this below to add to database
         info[0] = id;
         info[1] = name;
@@ -67,9 +76,5 @@ public class SteamAPIFetcher {
         info[7] = publishers.toString();
         return info;
     }
-    // Perhaps we have a toString method, but not ideal for database fetching
-    @Override
-    public String toString() {
-        return Arrays.toString(info);
-    }
+    // TODO: add a steam status function formally
 }

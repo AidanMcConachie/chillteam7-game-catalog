@@ -1,18 +1,24 @@
-package backend;
+/*
+getTotalRecords() -> returns total records (int)
+create() -> Creates the initial database...should only be called once when the user first starts the program (void)
+addGame(int steamid) -> add a steam game's information to the database (void)
+removeGame(int steamid) -> removes a steam game's information from the database (void)
+fetchGameInfo(int steamid, String component) -> returns one piece of information about a game (available options for components:
+id, name, description, headerImage, price, genres, developers, publishers), (String)
+fetchAllGameInfo(int steamid), returns all information about a game (String[]), worse performance than above
+clear(), deletes and creates the database, or "clears it" (void)
+ */
 
-// Might need maven for PostGreSQL
+package backend;
 
 import java.sql.*;
 
 
 public class Database {
     private int totalRecords;
-    // change below
     String catalogJdbcURL = "jdbc:sqlite:database/catalog.db";
-    String reviewJDBCURL = "jdbc:sqlite:database/reviews.db";
     SteamAPIFetcher fetcher = new SteamAPIFetcher();
 
-    //
     public Database() {
     }
 
@@ -21,7 +27,7 @@ public class Database {
     }
 
     // Can add more params if needed
-    public void createDatabase() throws SQLException { // Only needs to be run once, perhaps when the user first loads up the UI?
+    public void create() throws SQLException { // Only needs to be run once, perhaps when the user first loads up the UI?
         try (Connection connection = DriverManager.getConnection(catalogJdbcURL)) {
             connection.createStatement().execute("CREATE TABLE IF NOT EXISTS catalog (id, name, description, headerImage, price, genres, developers, publishers)");
         }
@@ -96,7 +102,7 @@ public class Database {
         return null;
     }
 
-    public void clearDatabase() throws SQLException {
+    public void clear() throws SQLException {
         String query = "DROP TABLE IF EXISTS catalog";
         try (Connection connection = DriverManager.getConnection(catalogJdbcURL)) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -105,6 +111,6 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        createDatabase();
+        create();
     }
 }
