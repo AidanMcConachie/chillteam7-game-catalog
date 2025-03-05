@@ -1,11 +1,11 @@
 package backend;
 
 public class Card {
-    public String name;
-    public String genre;
-    public String id;
-    public String description;
-    public String imageUrl; //maybe use when it works ?
+    private String name;
+    private String genre;
+    private String id;
+    private String description;
+    private String imageUrl;  //maybe use when it works ?
 
     public Card(String name, String genre, String id, String description, String imageUrl) {
         this.name = name;
@@ -15,14 +15,21 @@ public class Card {
         this.imageUrl = imageUrl;
     }
 
+    //get the card components
+    public String getName() { return name; }
+    public String getGenre() { return genre; }
+    public String getId() { return id; }
+    public String getDescription() { return description; }
+    public String getImageUrl() { return imageUrl; }
+
     @Override
     public String toString() {
         return "Card{" +
                 "name='" + name + '\'' +
                 ", genre='" + genre + '\'' +
                 ", id='" + id + '\'' +
-               ", description='" + description + '\'' +
-//                ", imageUrl='" + imageUrl + '\'' +
+                ", description='" + description + '\'' +
+        //        ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
 }
