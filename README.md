@@ -4,7 +4,9 @@
 ![UMLChillTeam7 (1)](https://github.com/user-attachments/assets/aa7a0af4-79ad-4de0-8e94-296c68bec234)
  <br> Here is our UML diagram based on our requirements from our phase 1 planning and finalizations.
 
-
+# UML Sequence Diagram Chill Team 7 Diagram
+![ChillTeam7umlSequence](https://github.com/user-attachments/assets/725c0f66-b299-4c4e-9701-d28a525aaaf7)
+  <br> Here is our UML sequence diagram for adding a game.
 # Coding Practices
 ## Comments
 1) Descriptive comments for functions, classes, etc. (if it isn't intuitive)
