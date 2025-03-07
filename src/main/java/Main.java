@@ -1,8 +1,7 @@
-package frontend;
-
 import backend.Card;
 import backend.Database;
 import backend.SteamAPIFetcher;
+import frontend.catalogUI;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -11,9 +10,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Database db = new Database();
 
-        SteamAPIFetcher fetcher = new SteamAPIFetcher();
         Database database = new Database();
         database.clear();
         database.addGame(413150);
@@ -22,7 +19,6 @@ public class Main {
         String[] info2 = database.fetchAllGameInfo(440);
         System.out.println(Arrays.toString(info2));
         System.out.println(Arrays.toString(info));
-        // db.appendToCatalog(""); // Uncomment when needed
 
         // Example cards
         // TO DO: Replace with database data)
