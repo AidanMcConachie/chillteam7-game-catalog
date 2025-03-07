@@ -12,6 +12,7 @@ clear(), deletes and creates the database, or "clears it" (void)
 package backend;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 
 public class Database {
@@ -116,5 +117,17 @@ public class Database {
             e.printStackTrace();
         }
         create();
+    }
+    public ArrayList<Integer> fetchAllGameIDs() throws SQLException {
+        String query = "SELECT * FROM catalog";
+        ArrayList<Integer> result = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(catalogJdbcURL)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                result.add(resultSet.getInt(1));
+            }
+        }
+        return result;
     }
 }
