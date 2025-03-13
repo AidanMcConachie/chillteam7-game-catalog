@@ -6,16 +6,19 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+
+// TODO: Test this class (WIP!)
+
 public class ReviewDatabase{
-    String reviewJdbcURL = "jdbc:sqlite:database/review.db";
+    String reviewsJdbcURL = "jdbc:sqlite:database/reviews.db";
     public ReviewDatabase() {}
     public void create() throws SQLException {
-        try(Connection connection = DriverManager.getConnection(reviewJdbcURL)) {
-            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS reviews id, username, rating, reviewtext, datePosted");
+        try(Connection connection = DriverManager.getConnection(reviewsJdbcURL)) {
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS reviews (id, username, rating, reviewtext, datePosted)");
         }
     }
     public void addReview(int id, String username, int rating, String reviewText) throws SQLException {
-        Connection connection = DriverManager.getConnection(reviewJdbcURL);
+        Connection connection = DriverManager.getConnection(reviewsJdbcURL);
         String query = "INSERT INTO reviews (id, username, rating, reviewText, datePosted) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -23,7 +26,7 @@ public class ReviewDatabase{
         preparedStatement.setString(2, username);
         preparedStatement.setInt(3, rating);
         preparedStatement.setString(4, reviewText);
-        preparedStatement.setDate(5, Date.valueOf(LocalDate.now()));
+        preparedStatement.setDate(5, Date.valueOf(LocalDate.now())); // Need to test
         preparedStatement.executeUpdate();
         preparedStatement.close();
         connection.close();
@@ -32,7 +35,7 @@ public class ReviewDatabase{
         String query = "SELECT * FROM reviews WHERE steamid = ?";
         ArrayList<String[]> reviews = new ArrayList<>();
         try{
-            Connection connection = DriverManager.getConnection(reviewJdbcURL);
+            Connection connection = DriverManager.getConnection(reviewsJdbcURL);
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, steamid);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -46,7 +49,7 @@ public class ReviewDatabase{
     }
     public void clear() throws SQLException {
         String query = "DROP TABLE IF EXISTS reviews";
-        try(Connection connection = DriverManager.getConnection(reviewJdbcURL)) {
+        try(Connection connection = DriverManager.getConnection(reviewsJdbcURL)) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.executeUpdate();
             preparedStatement.close();

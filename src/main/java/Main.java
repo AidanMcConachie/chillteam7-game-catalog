@@ -1,5 +1,6 @@
 import backend.Card;
 import backend.CatalogDatabase;
+import backend.ReviewDatabase;
 import backend.SteamAPIFetcher;
 import frontend.catalogUI;
 
@@ -12,7 +13,9 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         CatalogDatabase database = new CatalogDatabase();
+        ReviewDatabase reviews = new ReviewDatabase();
         database.clear();
+        reviews.clear();
         database.addGame(413150);
         database.addGame(440);
         String[] info = database.fetchAllGameInfo(413150);
