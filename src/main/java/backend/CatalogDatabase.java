@@ -104,7 +104,7 @@ public class CatalogDatabase {
         try (Connection connection = DriverManager.getConnection(catalogJdbcURL)) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.executeUpdate();
-            connection.close();
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
