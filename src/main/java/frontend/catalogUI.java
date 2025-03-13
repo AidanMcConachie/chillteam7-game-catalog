@@ -9,6 +9,8 @@ import java.util.List;
 
 public class catalogUI extends JFrame {
     private JPanel cardContainer;
+    private JPanel sidePanel;
+    private JPanel sortingPanel;
     private JComboBox<String> sortDropdown;
     private JComboBox<String> orderDropdown;
     private JButton filterButton;
@@ -26,10 +28,25 @@ public class catalogUI extends JFrame {
         setSize(800, 600);
         setMinimumSize(new Dimension(800, 600)); // Set minimum window size
         setLocationRelativeTo(null);
+        getContentPane().setBackground(Color.DARK_GRAY);
+        setBackground(Color.DARK_GRAY);
 
-        //Sorting UI
-        JPanel sortingPanel = new JPanel();
+        // Side Panel (Contains Add Game Button)
+        sidePanel = new JPanel();
+        sidePanel.setPreferredSize(new Dimension(100, 600));
+        sidePanel.setBackground(Color.DARK_GRAY);
+        sidePanel.setLayout(new BorderLayout());
+
+        JButton addGameButton = new JButton("Add Game");
+        sidePanel.add(addGameButton, BorderLayout.CENTER);
+        add(sidePanel, BorderLayout.EAST); // Add to the right
+
+        addGameButton.addActionListener(e -> showAddGameScreen());
+
+        // Sorting UI
+        sortingPanel = new JPanel();
         sortingPanel.add(new JLabel("Sort by:"));
+        sortingPanel.setBackground(Color.decode("#47797d"));
 
         sortDropdown = new JComboBox<>(new String[]{"Name", "Genre", "ID"});
         sortingPanel.add(sortDropdown);
@@ -47,22 +64,22 @@ public class catalogUI extends JFrame {
 
         add(sortingPanel, BorderLayout.NORTH);
 
-        // Card Display Panel (With Updated Layout & Background Color)
+        // Card Display Panel (For Game Cards)
         cardContainer = new JPanel();
-        cardContainer.setBackground(Color.decode("#47797d")); // New background color
-        cardContainer.setPreferredSize(new Dimension(500, 400)); // Adjusted panel size
-        cardContainer.setLayout(new FlowLayout()); // Layout remains flexible
+        cardContainer.setBackground(Color.decode("#47797d"));
+        cardContainer.setPreferredSize(new Dimension(500, 400));
+        cardContainer.setLayout(new FlowLayout());
 
         JScrollPane scrollPane = new JScrollPane(cardContainer);
-        scrollPane.setPreferredSize(new Dimension(650, 450)); // Adjusted size
-        scrollPane.setBackground(Color.DARK_GRAY);
+        scrollPane.setPreferredSize(new Dimension(650, 450));
         scrollPane.setBorder(BorderFactory.createEmptyBorder(40, 100, 20, 100));
+        scrollPane.setBackground(Color.DARK_GRAY);
 
         add(scrollPane, BorderLayout.CENTER);
 
         displayGames();
 
-        // Filter Button (Switch Between "Apply" and "Revert")
+        // Filter Button Logic
         filterButton.addActionListener(e -> {
             if (SortGame.isFilterActive()) {
                 displayedList = SortGame.revertFilter();
@@ -73,7 +90,7 @@ public class catalogUI extends JFrame {
             displayGames();
         });
 
-        // Genre Selection (Filter Games by Genre)
+        // Genre Filtering
         genreDropdown.addActionListener(e -> {
             String selectedGenre = (String) genreDropdown.getSelectedItem();
             displayedList = SortGame.filterByGenre(selectedGenre);
@@ -85,15 +102,83 @@ public class catalogUI extends JFrame {
     }
 
     /**
-     * Call `SortGame.sortGames()` with Sorting Order
-     * - By default, everything is sorted in ascending order.
-     * - Since genre is sorted differently than ID and Name, we turn off genre filters unless sorting by genre.
+     * Switches to the "Add Game" screen.
+     */
+    private void showAddGameScreen() {
+        JPanel addGamePanel = new JPanel();
+        addGamePanel.setBackground(Color.decode("#47797d"));
+        addGamePanel.setLayout(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        // Title Label
+        JLabel titleLabel = new JLabel("Add a New Game");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        addGamePanel.add(titleLabel, gbc);
+
+        // Steam ID Label
+        gbc.gridy++;
+        JLabel steamIDLabel = new JLabel("Enter Steam ID:");
+        addGamePanel.add(steamIDLabel, gbc);
+
+        // Steam ID Input Field
+        gbc.gridx = 1;
+        JTextField steamIDField = new JTextField(15);
+        addGamePanel.add(steamIDField, gbc);
+
+        // Submit Button
+        gbc.gridy++;
+        gbc.gridx = 0;
+        JButton submitButton = new JButton("Submit");
+        addGamePanel.add(submitButton, gbc);
+
+        // Back Button (Returns to Main Screen)
+        gbc.gridx = 1;
+        JButton backButton = new JButton("Back");
+        addGamePanel.add(backButton, gbc);
+
+        // Clear UI and Add New Panel
+        getContentPane().removeAll();
+        add(addGamePanel, BorderLayout.CENTER);
+        revalidate();
+        repaint();
+
+        // Back button functionality
+        backButton.addActionListener(e -> returnToMainScreen());
+    }
+
+    /**
+     * Restores the main catalog screen.
+     */
+    private void returnToMainScreen() {
+        getContentPane().removeAll();
+
+        JScrollPane scrollPane = new JScrollPane(cardContainer);
+        scrollPane.setPreferredSize(new Dimension(650, 450));
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(40, 100, 20, 100));
+        scrollPane.getViewport().setBackground(Color.DARK_GRAY); // Ensure background consistency
+        scrollPane.setBackground(Color.DARK_GRAY);
+
+        // Restore the main components
+        add(scrollPane, BorderLayout.CENTER);
+        add(sidePanel, BorderLayout.EAST);
+        add(sortingPanel, BorderLayout.NORTH);
+
+        revalidate();
+        repaint();
+    }
+
+
+    /**
+     * Applies sorting based on user selection.
      */
     private void applySorting() {
         String criteria = (String) sortDropdown.getSelectedItem();
         boolean ascending = orderDropdown.getSelectedItem().equals("Ascending");
 
-        // Genre dropdown is only visible when sorting by Genre
         if (criteria.equals("Genre")) {
             genreDropdown.setVisible(true);
             updateGenreDropdown();
@@ -105,8 +190,7 @@ public class catalogUI extends JFrame {
     }
 
     /**
-     * Dynamically Adds Genre to `JComboBox`
-     * - Ensures that duplicate genres are not added.
+     * Updates genre dropdown dynamically.
      */
     private void updateGenreDropdown() {
         genreDropdown.removeAllItems();
@@ -124,37 +208,37 @@ public class catalogUI extends JFrame {
     }
 
     /**
-     * Checks if a game contains a genre within our `JComboBox`
-     * - Helps `updateGenreDropdown()` avoid duplicates and only add new genres.
+     * Checks if a genre is already in the dropdown.
      */
     private boolean genreDropdownContains(String genre) {
         for (int i = 0; i < genreDropdown.getItemCount(); i++) {
             if (genreDropdown.getItemAt(i).equals(genre)) {
-                return true; // Genre already exists
+                return true;
             }
         }
-        return false; // Genre is new
+        return false;
     }
 
     /**
-     * Adds a List of Cards to the UI After Creation
+     * Adds game cards to the UI.
      */
     public void addCards(List<Card> cards) {
         for (Card card : cards) {
             cardContainer.add(new CardPanel(card));
+            cardContainer.setBackground(Color.darkGray);
         }
-        cardContainer.revalidate(); // Refresh UI
+        cardContainer.revalidate();
     }
 
     /**
-     * Displays the Current List of Games
+     * Displays the current list of games.
      */
     private void displayGames() {
-        cardContainer.removeAll(); // Clear previous game cards
+        cardContainer.removeAll();
         for (Card card : displayedList) {
-            cardContainer.add(new CardPanel(card)); //Add each card to UI
+            cardContainer.add(new CardPanel(card));
         }
-        cardContainer.revalidate(); // Refresh UI
-        cardContainer.repaint(); // Redraw components
+        cardContainer.revalidate();
+        cardContainer.repaint();
     }
 }
