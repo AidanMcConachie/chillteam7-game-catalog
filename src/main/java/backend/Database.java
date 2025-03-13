@@ -36,8 +36,11 @@ public class Database {
 
     // Can add more params if needed
     public void create() throws SQLException { // Only needs to be run once, perhaps when the user first loads up the UI?
-        try (Connection connection = getConnection()) {
+        Connection connection = getConnection();
+        try{
             connection.createStatement().execute("CREATE TABLE IF NOT EXISTS catalog (id, name, description, headerImage, price, genres, developers, publishers)");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -59,7 +62,7 @@ public class Database {
             preparedStatement.executeUpdate(); // this might just be "execute"
             preparedStatement.close();
             totalRecords++;
-            connection.close();
+            //connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,7 +77,7 @@ public class Database {
             preparedStatement.setInt(1, steamid);
             preparedStatement.executeUpdate();
             totalRecords--; // might not be best practice
-            connection.close();
+            //connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -90,7 +93,7 @@ public class Database {
             if (resultSet.next()) {
                 return resultSet.getString(component);
             }
-            connection.close(); // this probably isn't correct because it's out of scope
+            //connection.close(); // this probably isn't correct because it's out of scope
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -106,7 +109,7 @@ public class Database {
             if(resultSet.next()) {
                 return new String[]{resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8)};
             }
-            connection.close(); // again this probably isn't ideal
+            //connection.close(); // again this probably isn't ideal
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -115,7 +118,8 @@ public class Database {
 
     public void clear() throws SQLException {
         String query = "DROP TABLE IF EXISTS catalog";
-        try (Connection connection = getConnection()) {
+        try{
+            Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.executeUpdate();
             totalRecords=0;
