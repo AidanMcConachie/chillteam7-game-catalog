@@ -14,17 +14,13 @@ package backend;
 import java.sql.*;
 
 
-public class Database {
-    private int totalRecords;
+public class CatalogDatabase {
     String catalogJdbcURL = "jdbc:sqlite:database/catalog.db";
     SteamAPIFetcher fetcher = new SteamAPIFetcher();
 
-    public Database() {
+    public CatalogDatabase() {
     }
 
-    public int getTotalRecords() {
-        return totalRecords;
-    }
 
     // Can add more params if needed
     public void create() throws SQLException { // Only needs to be run once, perhaps when the user first loads up the UI?
@@ -50,7 +46,6 @@ public class Database {
             preparedStatement.setString(8, dbArguments[7]);
             preparedStatement.executeUpdate(); // this might just be "execute"
             preparedStatement.close();
-            totalRecords++;
             connection.close();
 
         } catch (SQLException e) {
@@ -65,7 +60,6 @@ public class Database {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, steamid);
             preparedStatement.executeUpdate();
-            totalRecords--; // might not be best practice
             connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -111,7 +105,6 @@ public class Database {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.executeUpdate();
             connection.close();
-            totalRecords=0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
