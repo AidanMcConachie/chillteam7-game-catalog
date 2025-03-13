@@ -149,9 +149,10 @@ public class catalogUI extends JFrame {
                     if (gameInfo != null && gameInfo.length >= 4) {
                         Card newCard = new Card(gameInfo[1], gameInfo[5], gameInfo[0], gameInfo[2], gameInfo[3]);
                         gameList.add(newCard);
-                        addCards(gameList);
-                        displayedList.add(newCard);
+//                        displayedList.add(newCard);
+
                         displayGames(); // Refresh the UI
+
                         returnToMainScreen();
                     } else {
                         JOptionPane.showMessageDialog(this, "Error fetching game info.", "Error", JOptionPane.ERROR_MESSAGE);
