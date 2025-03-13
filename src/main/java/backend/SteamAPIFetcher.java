@@ -27,13 +27,13 @@ public class SteamAPIFetcher {
         URL url = new URL("https://store.steampowered.com/api/appdetails?appids=" + steamID);
         StringBuilder stringBuilder = new StringBuilder();
         try(InputStream input = url.openStream()) {
-           InputStreamReader reader = new InputStreamReader(input);
-           BufferedReader bufferedReader = new BufferedReader(reader);
-           String line;
-           while((line = bufferedReader.readLine()) != null ) {
-               stringBuilder.append(line);
-           }
-       }
+            InputStreamReader reader = new InputStreamReader(input);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            String line;
+            while((line = bufferedReader.readLine()) != null ) {
+                stringBuilder.append(line);
+            }
+        }
         JSONObject jsonData = new JSONObject(stringBuilder.toString());
         if(!jsonData.getJSONObject(String.valueOf(steamID)).getBoolean("success")){ // might be able to remove this
             return null;

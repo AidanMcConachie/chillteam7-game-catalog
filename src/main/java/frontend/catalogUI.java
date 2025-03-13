@@ -2,7 +2,7 @@ package frontend;
 
 import backend.Card;
 import backend.SortGame;
-
+import backend.Database;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -17,10 +17,12 @@ public class catalogUI extends JFrame {
     private JComboBox<String> genreDropdown;
     private List<Card> gameList;
     private List<Card> displayedList;
+    private Database database;
 
-    public catalogUI(List<Card> gameList) {
+    public catalogUI(List<Card> gameList, Database database) {
         this.gameList = gameList;
         this.displayedList = gameList; // Initially, display all games
+        this.database = new Database();
         SortGame.setOriginalList(gameList); // Sets original list in SortGame
 
         setTitle("Video Game Catalog");
@@ -134,6 +136,34 @@ public class catalogUI extends JFrame {
         gbc.gridx = 0;
         JButton submitButton = new JButton("Submit");
         addGamePanel.add(submitButton, gbc);
+
+        submitButton.addActionListener(e -> {
+            String steamIDText = steamIDField.getText().trim();
+
+            if (!steamIDText.isEmpty()) {
+                try {
+                    int steamID = Integer.parseInt(steamIDText);
+                    database.addGame(steamID);  // Use existing Database instance
+
+                    String[] gameInfo = database.fetchAllGameInfo(steamID);
+                    if (gameInfo != null && gameInfo.length >= 4) {
+                        Card newCard = new Card(gameInfo[1], gameInfo[5], gameInfo[0], gameInfo[2], gameInfo[3]);
+                        gameList.add(newCard);
+                        addCards(gameList);
+                        displayedList.add(newCard);
+                        displayGames(); // Refresh the UI
+                        returnToMainScreen();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Error fetching game info.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Invalid Steam ID! Please enter a number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Please enter a Steam ID.", "Input Error", JOptionPane.WARNING_MESSAGE);
+            }
+        });
+
 
         // Back Button (Returns to Main Screen)
         gbc.gridx = 1;

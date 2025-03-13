@@ -16,7 +16,8 @@ import java.sql.*;
 
 public class Database {
     private int totalRecords;
-    String catalogJdbcURL = "jdbc:sqlite:database/catalog.db";
+    private static Connection con = null;
+    public static String catalogJdbcURL = "jdbc:sqlite:database/catalog.db";
     SteamAPIFetcher fetcher = new SteamAPIFetcher();
 
     public Database() {
@@ -26,9 +27,16 @@ public class Database {
         return totalRecords;
     }
 
+    public static Connection getConnection() throws SQLException {
+        if(con == null) {
+            con = DriverManager.getConnection(catalogJdbcURL);
+        }
+        return con;
+    }
+
     // Can add more params if needed
     public void create() throws SQLException { // Only needs to be run once, perhaps when the user first loads up the UI?
-        try (Connection connection = DriverManager.getConnection(catalogJdbcURL)) {
+        try (Connection connection = getConnection()) {
             connection.createStatement().execute("CREATE TABLE IF NOT EXISTS catalog (id, name, description, headerImage, price, genres, developers, publishers)");
         }
     }
@@ -36,7 +44,7 @@ public class Database {
     public void addGame(int steamid) throws Exception { // dbArguments: id, name, description, headerIMage, generes, developers, publishers
         String[] dbArguments = fetcher.fetchGameData(steamid);
         try {
-            Connection connection = DriverManager.getConnection(catalogJdbcURL);
+            Connection connection = getConnection();
             String query = "INSERT INTO catalog (id, name, description, headerImage, price, genres, developers, publishers) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"; // formatting is done below
 
             PreparedStatement preparedStatement = connection.prepareStatement(query); // might just be Statement
@@ -61,7 +69,7 @@ public class Database {
     public void removeGame(int steamid) {
         String query = "DELETE FROM catalog WHERE id = ?";
         try {
-            Connection connection = DriverManager.getConnection(catalogJdbcURL);
+            Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, steamid);
             preparedStatement.executeUpdate();
@@ -75,7 +83,7 @@ public class Database {
     public String fetchGameInfo(int steamid, String component) {
         String query = "SELECT " + component + " FROM catalog WHERE id = ?";
         try {
-            Connection connection = DriverManager.getConnection(catalogJdbcURL);
+            Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, steamid + "");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -91,7 +99,7 @@ public class Database {
     public String[] fetchAllGameInfo(int steamid) {
         String query = "SELECT * FROM catalog WHERE id = ?";
         try{
-            Connection connection = DriverManager.getConnection(catalogJdbcURL);
+            Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, steamid + "");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -107,14 +115,14 @@ public class Database {
 
     public void clear() throws SQLException {
         String query = "DROP TABLE IF EXISTS catalog";
-        try (Connection connection = DriverManager.getConnection(catalogJdbcURL)) {
+        try (Connection connection = getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.executeUpdate();
-            connection.close();
             totalRecords=0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         create();
     }
+
 }
