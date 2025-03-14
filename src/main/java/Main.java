@@ -17,9 +17,12 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         Database database = new Database();
-//        database.clear();
-
-
+        database.clear();
+        database.addGame(730);
+        database.addGame(440);
+        int dbcount = database.getAllGameIDs().size();
+        System.out.println(dbcount + "   db!");
+        System.out.println(Arrays.toString(database.getAllGameIDs().toArray()));
         // Example cards
         // TO DO: Replace with database data)
         List<Card> cards = new ArrayList<>();

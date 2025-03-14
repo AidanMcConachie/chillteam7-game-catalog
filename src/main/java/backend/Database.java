@@ -12,6 +12,7 @@ clear(), deletes and creates the database, or "clears it" (void)
 package backend;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 
 public class Database {
@@ -45,29 +46,31 @@ public class Database {
     }
 
     public void addGame(int steamid) throws Exception { // dbArguments: id, name, description, headerIMage, generes, developers, publishers
-        String[] dbArguments = fetcher.fetchGameData(steamid);
-        try {
-            Connection connection = getConnection();
-            connection.setAutoCommit(false);
-            String query = "INSERT INTO catalog (id, name, description, headerImage, price, genres, developers, publishers) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"; // formatting is done below
+        if(!isInDatabase(steamid)) {
+            String[] dbArguments = fetcher.fetchGameData(steamid);
+            try {
+                Connection connection = getConnection();
+                connection.setAutoCommit(false);
+                String query = "INSERT INTO catalog (id, name, description, headerImage, price, genres, developers, publishers) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"; // formatting is done below
 
-            PreparedStatement preparedStatement = connection.prepareStatement(query); // might just be Statement
-            preparedStatement.setString(1, dbArguments[0]);
-            preparedStatement.setString(2, dbArguments[1]);
-            preparedStatement.setString(3, dbArguments[2]);
-            preparedStatement.setString(4, dbArguments[3]);
-            preparedStatement.setString(5, dbArguments[4]);
-            preparedStatement.setString(6, dbArguments[5]);
-            preparedStatement.setString(7, dbArguments[6]);
-            preparedStatement.setString(8, dbArguments[7]);
-            preparedStatement.executeUpdate(); // this might just be "execute"
-            preparedStatement.close();
-            connection.commit();
-            totalRecords++;
-            //connection.close();
+                PreparedStatement preparedStatement = connection.prepareStatement(query); // might just be Statement
+                preparedStatement.setString(1, dbArguments[0]);
+                preparedStatement.setString(2, dbArguments[1]);
+                preparedStatement.setString(3, dbArguments[2]);
+                preparedStatement.setString(4, dbArguments[3]);
+                preparedStatement.setString(5, dbArguments[4]);
+                preparedStatement.setString(6, dbArguments[5]);
+                preparedStatement.setString(7, dbArguments[6]);
+                preparedStatement.setString(8, dbArguments[7]);
+                preparedStatement.executeUpdate(); // this might just be "execute"
+                preparedStatement.close();
+                connection.commit();
+                totalRecords++;
+                //connection.close();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -129,6 +132,35 @@ public class Database {
             e.printStackTrace();
         }
         create();
+    }
+    public ArrayList<Integer> getAllGameIDs(){
+        String query = "SELECT id FROM catalog";
+        ArrayList<Integer> ids = new ArrayList<>();
+        try{
+            Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                ids.add(resultSet.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return ids;
+    }
+    public boolean isInDatabase(int steamid) {
+        String query = "SELECT id FROM catalog WHERE id = ?";
+        try{
+            Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, steamid);
+            if(preparedStatement.executeQuery().next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 
 }
