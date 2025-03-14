@@ -5,6 +5,7 @@ import backend.SortGame;
 import backend.Database;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class catalogUI extends JFrame {
@@ -32,6 +33,15 @@ public class catalogUI extends JFrame {
         setLocationRelativeTo(null);
         getContentPane().setBackground(Color.DARK_GRAY);
         setBackground(Color.DARK_GRAY);
+
+        ArrayList<Integer> allGames = database.getAllGameIDs();
+
+
+        for(int i = 0; i < allGames.size(); i++){
+            String[] gameInfo = database.fetchAllGameInfo(allGames.get(i));
+            Card newCard = new Card(gameInfo[1], gameInfo[5], gameInfo[0], gameInfo[2], gameInfo[3]);
+            gameList.add(newCard);
+        }
 
         // Side Panel (Contains Add Game Button)
         sidePanel = new JPanel();
