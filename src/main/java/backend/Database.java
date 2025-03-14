@@ -48,6 +48,7 @@ public class Database {
         String[] dbArguments = fetcher.fetchGameData(steamid);
         try {
             Connection connection = getConnection();
+            connection.setAutoCommit(false);
             String query = "INSERT INTO catalog (id, name, description, headerImage, price, genres, developers, publishers) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"; // formatting is done below
 
             PreparedStatement preparedStatement = connection.prepareStatement(query); // might just be Statement
@@ -61,6 +62,7 @@ public class Database {
             preparedStatement.setString(8, dbArguments[7]);
             preparedStatement.executeUpdate(); // this might just be "execute"
             preparedStatement.close();
+            connection.commit();
             totalRecords++;
             //connection.close();
 
