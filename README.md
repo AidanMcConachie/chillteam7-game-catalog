@@ -3,6 +3,10 @@
 2) Open up command prompt and ensure java and maven are installed by running: `java & maven`
 4) Run the program: `mvn compile exec:java -Dexec.mainClass="Main"`
 ---
+# Burndown Chart as of Finishing Iteration 2
+![IMG_2737](https://github.com/user-attachments/assets/4d1141c0-d2de-4a02-923d-bab3967c4f6a)
+<br> Here is our progess as of iteration 2.
+
 # CatalogueUI Iteration 2 Chill Team 7 StateChart Diagram
 ![Screenshot 2025-03-08 135324](https://github.com/user-attachments/assets/b1ca80a4-e52f-4bc9-b8c4-96252a976937)
  <br> Here is our StateChart diagram for catalogueUI as of iteration 1.
