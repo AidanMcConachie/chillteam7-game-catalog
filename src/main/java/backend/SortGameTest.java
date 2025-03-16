@@ -3,6 +3,7 @@ package backend;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,13 +16,13 @@ public class SortGameTest {
     public void setUp() {
         // Create a test list of cards before each test
         testCards = new ArrayList<>();
-        testCards.add(new Card("Zelda", "Adventure", "2", "A legend of Zelda game", "zelda.jpg"));
-        testCards.add(new Card("Mario", "Platformer", "1", "Super Mario Bros game", "mario.jpg"));
-        testCards.add(new Card("Tetris", "Puzzle", "3", "Classic block puzzle game", "tetris.jpg"));
-        testCards.add(new Card("Final Fantasy", "RPG", "5", "Fantasy role-playing game", "ff.jpg"));
-        testCards.add(new Card("Counter-Strike", "FPS", "4", "First-person shooter game", "cs.jpg"));
-        testCards.add(new Card("Age of Empires", "Strategy", "6", "Historical real-time strategy game", "aoe.jpg"));
-        testCards.add(new Card("Minecraft", "Adventure", "7", "Block building sandbox game", "minecraft.jpg"));
+        testCards.add(new Card("Zelda", new String[]{"Adventure"}, "2", "A legend of Zelda game", "zelda.jpg"));
+        testCards.add(new Card("Mario", new String[]{"Platformer"}, "1", "Super Mario Bros game", "mario.jpg"));
+        testCards.add(new Card("Tetris", new String[]{"Puzzle"}, "3", "Classic block puzzle game", "tetris.jpg"));
+        testCards.add(new Card("Final Fantasy", new String[]{"RPG"}, "5", "Fantasy role-playing game", "ff.jpg"));
+        testCards.add(new Card("Counter-Strike", new String[]{"FPS"}, "4", "First-person shooter game", "cs.jpg"));
+        testCards.add(new Card("Age of Empires", new String[]{"Strategy"}, "6", "Historical real-time strategy game", "aoe.jpg"));
+        testCards.add(new Card("Minecraft", new String[]{"Adventure"}, "7", "Block building sandbox game", "minecraft.jpg"));
 
         // Initialize the original list in SortGame
         SortGame.setOriginalList(new ArrayList<>(testCards));
@@ -56,23 +57,6 @@ public class SortGameTest {
         assertEquals("Age of Empires", sorted.get(sorted.size() - 1).getName());
     }
 
-    @Test
-    public void testSortGamesByGenreAscending() {
-        List<Card> sorted = SortGame.sortGames(testCards, "genre", true);
-
-        assertEquals("Adventure", sorted.get(0).getGenre());
-        assertEquals("Adventure", sorted.get(1).getGenre());
-        assertEquals("Strategy", sorted.get(sorted.size() - 1).getGenre());
-    }
-
-    @Test
-    public void testSortGamesByGenreDescending() {
-        List<Card> sorted = SortGame.sortGames(testCards, "genre", false);
-
-        assertEquals("Strategy", sorted.get(0).getGenre());
-        assertEquals("RPG", sorted.get(1).getGenre());
-        assertEquals("Adventure", sorted.get(sorted.size() - 1).getGenre());
-    }
 
     @Test
     public void testSortGamesByIdAscending() {
@@ -106,8 +90,7 @@ public class SortGameTest {
         List<Card> filtered = SortGame.filterByGenre("Adventure");
 
         assertEquals(2, filtered.size());
-        assertTrue(filtered.stream().allMatch(card -> card.getGenre().equals("Adventure")));
-        assertTrue(SortGame.isFilterActive());
+        assertTrue(filtered.stream().allMatch(card -> Arrays.equals(card.getGenres(), new String[]{"Adventure"})));
     }
 
     @Test
@@ -116,7 +99,6 @@ public class SortGameTest {
 
         assertEquals(1, filtered.size());
         assertEquals("Counter-Strike", filtered.get(0).getName());
-        assertTrue(SortGame.isFilterActive());
     }
 
     @Test
@@ -124,7 +106,6 @@ public class SortGameTest {
         List<Card> filtered = SortGame.filterByGenre("NonExistentGenre");
 
         assertEquals(0, filtered.size());
-        assertTrue(SortGame.isFilterActive());
     }
 
     @Test
@@ -132,7 +113,6 @@ public class SortGameTest {
         List<Card> filtered = SortGame.filterByGenre("All Genres");
 
         assertEquals(testCards.size(), filtered.size());
-        assertFalse(SortGame.isFilterActive());
     }
 
     @Test
@@ -140,20 +120,17 @@ public class SortGameTest {
         List<Card> filtered = SortGame.filterByGenre(null);
 
         assertEquals(testCards.size(), filtered.size());
-        assertFalse(SortGame.isFilterActive());
     }
 
     @Test
     public void testRevertFilter() {
         // First apply a filter
         SortGame.filterByGenre("RPG");
-        assertTrue(SortGame.isFilterActive());
 
         // Then revert it
         List<Card> result = SortGame.revertFilter();
 
         assertEquals(testCards.size(), result.size());
-        assertFalse(SortGame.isFilterActive());
     }
 
     @Test

@@ -142,6 +142,104 @@ public class catalogUI extends JFrame {
 
         setVisible(true);
     }
+    /**
+     * Switches to the "Add Game" screen.
+     */
+    private void showAddGameScreen() {
+        JPanel addGamePanel = new JPanel();
+        addGamePanel.setBackground(Color.decode("#47797d"));
+        addGamePanel.setLayout(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        // Title Label
+        JLabel titleLabel = new JLabel("Add a New Game");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        addGamePanel.add(titleLabel, gbc);
+
+        // Steam ID Label
+        gbc.gridy++;
+        JLabel steamIDLabel = new JLabel("Enter Steam ID:");
+        addGamePanel.add(steamIDLabel, gbc);
+
+        // Steam ID Input Field
+        gbc.gridx = 1;
+        JTextField steamIDField = new JTextField(15);
+        addGamePanel.add(steamIDField, gbc);
+
+        // Submit Button
+        gbc.gridy++;
+        gbc.gridx = 0;
+        JButton submitButton = new JButton("Submit");
+        addGamePanel.add(submitButton, gbc);
+
+        submitButton.addActionListener(e -> {
+            String steamIDText = steamIDField.getText().trim();
+
+            if (!steamIDText.isEmpty()) {
+                try {
+                    int steamID = Integer.parseInt(steamIDText);
+                    database.addGame(steamID);  // Use existing Database instance
+
+                    String[] gameInfo = database.fetchAllGameInfo(steamID);
+                    if (gameInfo != null && gameInfo.length >= 4) {
+                        Card newCard = new Card(gameInfo[1], new String[]{gameInfo[5]}, gameInfo[0], gameInfo[2], gameInfo[3]);
+                        gameList.add(newCard);
+//                        displayedList.add(newCard);
+
+                        displayGames(); // Refresh the UI
+
+                        returnToMainScreen();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Error fetching game info.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Invalid Steam ID! Please enter a number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Please enter a Steam ID.", "Input Error", JOptionPane.WARNING_MESSAGE);
+            }
+        });
+
+
+        // Back Button (Returns to Main Screen)
+        gbc.gridx = 1;
+        JButton backButton = new JButton("Back");
+        addGamePanel.add(backButton, gbc);
+
+        // Clear UI and Add New Panel
+        getContentPane().removeAll();
+        add(addGamePanel, BorderLayout.CENTER);
+        revalidate();
+        repaint();
+
+        // Back button functionality
+        backButton.addActionListener(e -> returnToMainScreen());
+    }
+
+    /**
+     * Restores the main catalog screen.
+     */
+    private void returnToMainScreen() {
+        getContentPane().removeAll();
+
+        JScrollPane scrollPane = new JScrollPane(cardContainer);
+        scrollPane.setPreferredSize(new Dimension(650, 450));
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(40, 100, 20, 100));
+        scrollPane.getViewport().setBackground(Color.DARK_GRAY); // Ensure background consistency
+        scrollPane.setBackground(Color.DARK_GRAY);
+
+        // Restore the main components
+        add(scrollPane, BorderLayout.CENTER);
+        add(sidePanel, BorderLayout.EAST);
+        add(sortingPanel, BorderLayout.NORTH);
+
+        revalidate();
+        repaint();
+    }
 
     //Update: Calls Backend to Get Unique Genres
 
