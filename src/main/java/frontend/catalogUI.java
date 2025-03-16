@@ -39,7 +39,7 @@ public class catalogUI extends JFrame {
         setMinimumSize(new Dimension(800, 600)); // Set minimum window size
         setLocationRelativeTo(null);
         getContentPane().setBackground(Color.DARK_GRAY);
-        setBackground(Color.DARK_GRAY);
+        this.setBackground(Color.DARK_GRAY);
 
         // Side Panel (Contains Add Game Button)
         sidePanel = new JPanel();
