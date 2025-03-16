@@ -21,8 +21,8 @@ public class CardPanel extends JPanel {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
         // Genre label
-        JLabel genreLabel = new JLabel("Genre: " + card.getGenre(), SwingConstants.CENTER);
-        genreLabel.setFont(new Font("Arial", Font.ITALIC, 12));
+        String genreText = String.join(", ", card.getGenres()); // Convert array to a comma-separated string
+        JLabel genreLabel = new JLabel("Genre: " + genreText, SwingConstants.CENTER);
 
 
         // Description area

@@ -2,32 +2,35 @@ package frontend;
 
 import backend.Card;
 import backend.SortGame;
+import backend.SearchGames;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Set;
 
 public class catalogUI extends JFrame {
     private JPanel cardContainer;
     private JComboBox<String> sortDropdown;
     private JComboBox<String> orderDropdown;
     private JButton filterButton;
+    private JButton revertFilterButton;
     private JComboBox<String> genreDropdown;
+    private JTextField searchField; //IMPLEMENTED: Search Bar
+    private JButton searchButton;   //IMPLEMENTED: Search Button
     private List<Card> gameList;
     private List<Card> displayedList;
 
     public catalogUI(List<Card> gameList) {
         this.gameList = gameList;
-        this.displayedList = gameList; // Initially, display all games
-        SortGame.setOriginalList(gameList); // Sets original list in SortGame
+        this.displayedList = gameList;
+        SortGame.setOriginalList(gameList);
 
         setTitle("Video Game Catalog");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
-        setMinimumSize(new Dimension(800, 600)); // Set minimum window size
         setLocationRelativeTo(null);
 
-        //Sorting UI
         JPanel sortingPanel = new JPanel();
         sortingPanel.add(new JLabel("Sort by:"));
 
@@ -45,116 +48,92 @@ public class catalogUI extends JFrame {
         genreDropdown.setVisible(false);
         sortingPanel.add(genreDropdown);
 
+        revertFilterButton = new JButton("Revert Filter");
+        revertFilterButton.setVisible(false);
+        sortingPanel.add(revertFilterButton);
+
+        // Update: Search Bar
+        searchField = new JTextField(15);
+        sortingPanel.add(searchField);
+
+        // Update: Search Button
+        searchButton = new JButton("Search");
+        sortingPanel.add(searchButton);
+
         add(sortingPanel, BorderLayout.NORTH);
 
-        // Card Display Panel (With Updated Layout & Background Color)
         cardContainer = new JPanel();
-        cardContainer.setBackground(Color.decode("#47797d")); // New background color
-        cardContainer.setPreferredSize(new Dimension(500, 400)); // Adjusted panel size
-        cardContainer.setLayout(new FlowLayout()); // Layout remains flexible
+        cardContainer.setBackground(Color.decode("#47797d"));
+        cardContainer.setLayout(new FlowLayout());
 
         JScrollPane scrollPane = new JScrollPane(cardContainer);
-        scrollPane.setPreferredSize(new Dimension(650, 450)); // Adjusted size
-        scrollPane.setBackground(Color.DARK_GRAY);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder(40, 100, 20, 100));
-
         add(scrollPane, BorderLayout.CENTER);
 
         displayGames();
 
-        // Filter Button (Switch Between "Apply" and "Revert")
+        // Update: Calls Backend Instead of Handling Logic Here
         filterButton.addActionListener(e -> {
-            if (SortGame.isFilterActive()) {
-                displayedList = SortGame.revertFilter();
-                filterButton.setText("Apply Filter");
+            String criteria = (String) sortDropdown.getSelectedItem();
+            boolean ascending = orderDropdown.getSelectedItem().equals("Ascending");
+
+            if (criteria.equals("Genre")) {
+                genreDropdown.setVisible(true);
+                updateGenreDropdown();
             } else {
-                applySorting();
+                genreDropdown.setVisible(false);
+                displayedList = SortGame.sortGames(displayedList, criteria.toLowerCase(), ascending);
+                revertFilterButton.setVisible(false);
+                displayGames();
             }
-            displayGames();
         });
 
-        // Genre Selection (Filter Games by Genre)
+        // Update: Calls Backend Instead of Handling Logic Here
         genreDropdown.addActionListener(e -> {
             String selectedGenre = (String) genreDropdown.getSelectedItem();
             displayedList = SortGame.filterByGenre(selectedGenre);
-            filterButton.setText("Revert Filter");
+            revertFilterButton.setVisible(true);
+            displayGames();
+        });
+
+        // Update: Calls Backend Instead of Handling Logic Here
+        revertFilterButton.addActionListener(e -> {
+            displayedList = SortGame.revertFilter();
+            revertFilterButton.setVisible(false);
+            genreDropdown.setVisible(false);
+            displayGames();
+        });
+
+        //IMPLEMENTED: Search Button Functionality (Calls Backend)
+        searchButton.addActionListener(e -> {
+            String searchQuery = searchField.getText();
+            displayedList = SearchGames.searchByName(searchQuery, gameList);
             displayGames();
         });
 
         setVisible(true);
     }
 
-    /**
-     * Call `SortGame.sortGames()` with Sorting Order
-     * - By default, everything is sorted in ascending order.
-     * - Since genre is sorted differently than ID and Name, we turn off genre filters unless sorting by genre.
-     */
-    private void applySorting() {
-        String criteria = (String) sortDropdown.getSelectedItem();
-        boolean ascending = orderDropdown.getSelectedItem().equals("Ascending");
+    //Update: Calls Backend to Get Unique Genres
 
-        // Genre dropdown is only visible when sorting by Genre
-        if (criteria.equals("Genre")) {
-            genreDropdown.setVisible(true);
-            updateGenreDropdown();
-        } else {
-            genreDropdown.setVisible(false);
-            displayedList = SortGame.sortGames(displayedList, criteria.toLowerCase(), ascending);
-            displayGames();
-        }
-    }
+    //For further implementation:
+    //add back a genreDropdownContains() so it can help with adding games dynamically
 
-    /**
-     * Dynamically Adds Genre to `JComboBox`
-     * - Ensures that duplicate genres are not added.
-     */
     private void updateGenreDropdown() {
+        Set<String> uniqueGenres = SortGame.getUniqueGenres();
+
         genreDropdown.removeAllItems();
         genreDropdown.addItem("All Genres");
-
-        for (Card card : gameList) {
-            if (card.getGenre() != null && !genreDropdownContains(card.getGenre())) {
-                genreDropdown.addItem(card.getGenre());
-            }
-        }
-
-        if (genreDropdown.getItemCount() > 0) {
-            genreDropdown.setSelectedIndex(0);
+        for (String genre : uniqueGenres) {
+            genreDropdown.addItem(genre);
         }
     }
 
-    /**
-     * Checks if a game contains a genre within our `JComboBox`
-     * - Helps `updateGenreDropdown()` avoid duplicates and only add new genres.
-     */
-    private boolean genreDropdownContains(String genre) {
-        for (int i = 0; i < genreDropdown.getItemCount(); i++) {
-            if (genreDropdown.getItemAt(i).equals(genre)) {
-                return true; // Genre already exists
-            }
-        }
-        return false; // Genre is new
-    }
-
-    /**
-     * Adds a List of Cards to the UI After Creation
-     */
-    public void addCards(List<Card> cards) {
-        for (Card card : cards) {
+    private void displayGames() {
+        cardContainer.removeAll();
+        for (Card card : displayedList) {
             cardContainer.add(new CardPanel(card));
         }
-        cardContainer.revalidate(); // Refresh UI
-    }
-
-    /**
-     * Displays the Current List of Games
-     */
-    private void displayGames() {
-        cardContainer.removeAll(); // Clear previous game cards
-        for (Card card : displayedList) {
-            cardContainer.add(new CardPanel(card)); //Add each card to UI
-        }
-        cardContainer.revalidate(); // Refresh UI
-        cardContainer.repaint(); // Redraw components
+        cardContainer.revalidate();
+        cardContainer.repaint();
     }
 }
