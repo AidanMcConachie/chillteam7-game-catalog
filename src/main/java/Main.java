@@ -10,6 +10,18 @@ import java.util.Arrays;
 import java.util.List;
 
 
+import backend.Card;
+import backend.Database;
+import backend.SteamAPIFetcher;
+import frontend.catalogUI;
+
+import javax.swing.*;
+import javax.xml.crypto.Data;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+
 
 public class Main {
     Database database;
@@ -17,11 +29,13 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         Database database = new Database();
-//        database.clear();
-
-
+        database.clear();
+        database.addGame(730);
+        database.addGame(440);
+        int dbcount = database.getAllGameIDs().size();
+        System.out.println(dbcount + "   db!");
+        System.out.println(Arrays.toString(database.getAllGameIDs().toArray()));
         // Example cards
-        // TO DO: (Replace with database data)
         List<Card> cards = new ArrayList<>();
         cards.add(new Card("Half-Life", new String[]{"FPS"}, "12345", "A revolutionary shooter", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYd_woEfxldwowEBzCTIlVV5h-HJsR13iHFQ&s"));
         cards.add(new Card("Portal", new String[]{"Puzzle"}, "67890", "A mind-bending game", "https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Portal_standalonebox.jpg/220px-Portal_standalonebox.jpg"));
@@ -40,14 +54,12 @@ public class Main {
         cards.add(new Card("Among Us", new String[]{"Party"}, "99999", "A social deduction game", "https://upload.wikimedia.org/wikipedia/en/9/9a/Among_Us_cover_art.jpg"));
         cards.add(new Card("Elden Ring", new String[]{"Action RPG"}, "00000", "A vast and challenging open-world RPG", "https://upload.wikimedia.org/wikipedia/en/b/b9/Elden_Ring_Box_art.jpg"));
 
+
         // had to change it so passes the `cards` list directly into the `catalogUI` constructor
         SwingUtilities.invokeLater(() -> new catalogUI(cards, database));
 
         // Create UI instance and add cards
         //catalogUI gameCatalogue = new catalogUI();
         //gameCatalogue.addCards(cards);
-
-
-
     }
 }

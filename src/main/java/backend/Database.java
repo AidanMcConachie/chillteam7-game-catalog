@@ -12,10 +12,10 @@ clear(), deletes and creates the database, or "clears it" (void)
 package backend;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 
 public class Database {
-    private int totalRecords;
     private static Connection con = null;
     public static String catalogJdbcURL = "jdbc:sqlite:database/catalog.db";
     SteamAPIFetcher fetcher = new SteamAPIFetcher();
@@ -23,9 +23,6 @@ public class Database {
     public Database() {
     }
 
-    public int getTotalRecords() {
-        return totalRecords;
-    }
 
     public static Connection getConnection() throws SQLException {
         if(con == null) {
@@ -45,29 +42,30 @@ public class Database {
     }
 
     public void addGame(int steamid) throws Exception { // dbArguments: id, name, description, headerIMage, generes, developers, publishers
-        String[] dbArguments = fetcher.fetchGameData(steamid);
-        try {
-            Connection connection = getConnection();
-            connection.setAutoCommit(false);
-            String query = "INSERT INTO catalog (id, name, description, headerImage, price, genres, developers, publishers) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"; // formatting is done below
+        if(!isInDatabase(steamid)) {
+            String[] dbArguments = fetcher.fetchGameData(steamid);
+            try {
+                Connection connection = getConnection();
+                connection.setAutoCommit(false);
+                String query = "INSERT INTO catalog (id, name, description, headerImage, price, genres, developers, publishers) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"; // formatting is done below
 
-            PreparedStatement preparedStatement = connection.prepareStatement(query); // might just be Statement
-            preparedStatement.setString(1, dbArguments[0]);
-            preparedStatement.setString(2, dbArguments[1]);
-            preparedStatement.setString(3, dbArguments[2]);
-            preparedStatement.setString(4, dbArguments[3]);
-            preparedStatement.setString(5, dbArguments[4]);
-            preparedStatement.setString(6, dbArguments[5]);
-            preparedStatement.setString(7, dbArguments[6]);
-            preparedStatement.setString(8, dbArguments[7]);
-            preparedStatement.executeUpdate(); // this might just be "execute"
-            preparedStatement.close();
-            connection.commit();
-            totalRecords++;
-            //connection.close();
+                PreparedStatement preparedStatement = connection.prepareStatement(query); // might just be Statement
+                preparedStatement.setString(1, dbArguments[0]);
+                preparedStatement.setString(2, dbArguments[1]);
+                preparedStatement.setString(3, dbArguments[2]);
+                preparedStatement.setString(4, dbArguments[3]);
+                preparedStatement.setString(5, dbArguments[4]);
+                preparedStatement.setString(6, dbArguments[5]);
+                preparedStatement.setString(7, dbArguments[6]);
+                preparedStatement.setString(8, dbArguments[7]);
+                preparedStatement.executeUpdate(); // this might just be "execute"
+                preparedStatement.close();
+                connection.commit();
+                //connection.close();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -78,8 +76,6 @@ public class Database {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, steamid);
             preparedStatement.executeUpdate();
-            totalRecords--; // might not be best practice
-            //connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -95,7 +91,6 @@ public class Database {
             if (resultSet.next()) {
                 return resultSet.getString(component);
             }
-            //connection.close(); // this probably isn't correct because it's out of scope
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -111,7 +106,6 @@ public class Database {
             if(resultSet.next()) {
                 return new String[]{resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8)};
             }
-            //connection.close(); // again this probably isn't ideal
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -124,11 +118,39 @@ public class Database {
             Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.executeUpdate();
-            totalRecords=0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         create();
+    }
+    public ArrayList<Integer> getAllGameIDs(){
+        String query = "SELECT id FROM catalog";
+        ArrayList<Integer> ids = new ArrayList<>();
+        try{
+            Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                ids.add(resultSet.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return ids;
+    }
+    public boolean isInDatabase(int steamid) {
+        String query = "SELECT id FROM catalog WHERE id = ?";
+        try{
+            Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, steamid);
+            if(preparedStatement.executeQuery().next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 
 }

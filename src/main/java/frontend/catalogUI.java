@@ -89,13 +89,12 @@ public class catalogUI extends JFrame {
         // Card Display Panel (For Game Cards)
         cardContainer = new JPanel();
         cardContainer.setBackground(Color.decode("#47797d"));
-        cardContainer.setPreferredSize(new Dimension(500, 400));
-        cardContainer.setLayout(new FlowLayout());
+        cardContainer.setLayout(new GridLayout(0, 3, 10, 10)); // 0 rows (dynamic), 3 columns, 10px spacing
 
-        JScrollPane scrollPane = new JScrollPane(cardContainer);
+        JScrollPane scrollPane = new JScrollPane(cardContainer, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setPreferredSize(new Dimension(650, 450));
         scrollPane.setBorder(BorderFactory.createEmptyBorder(40, 100, 20, 100));
-        scrollPane.setBackground(Color.DARK_GRAY);
+        scrollPane.getViewport().setBackground(Color.DARK_GRAY);
 
         add(scrollPane, BorderLayout.CENTER);
 
