@@ -40,13 +40,6 @@ public class Main {
         cards.add(new Card("Among Us", new String[]{"Party"}, "99999", "A social deduction game", "https://upload.wikimedia.org/wikipedia/en/9/9a/Among_Us_cover_art.jpg"));
         cards.add(new Card("Elden Ring", new String[]{"Action RPG"}, "00000", "A vast and challenging open-world RPG", "https://upload.wikimedia.org/wikipedia/en/b/b9/Elden_Ring_Box_art.jpg"));
 
-
-        //testing if 3 worded genres will be added in
-//        cards.add(new Card("XCOM 2", new String[]{"Turn-Based Strategy"}, "302", "A deep tactical game", "https://upload.wikimedia.org/wikipedia/en/7/7f/XCOM_2_cover_art.jpg"));
-//        cards.add(new Card("Total War", new String[]{"Real-Time Strategy"}, "303", "A large-scale war strategy game", "https://upload.wikimedia.org/wikipedia/en/5/5c/Total_War_Warhammer_PC_cover.jpg"));
-
-
-
         // had to change it so passes the `cards` list directly into the `catalogUI` constructor
         SwingUtilities.invokeLater(() -> new catalogUI(cards, database));
 
