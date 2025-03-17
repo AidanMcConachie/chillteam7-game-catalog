@@ -22,7 +22,8 @@ public class CardPanel extends JPanel {
         titleLabel.setForeground(Color.WHITE);
 
         // Genre label
-        JLabel genreLabel = new JLabel("Genre: " + card.getGenre(), SwingConstants.CENTER);
+        String genreText = String.join(", ", card.getGenres()); // Convert array to a comma-separated string
+        JLabel genreLabel = new JLabel("Genre: " + genreText, SwingConstants.CENTER);
         genreLabel.setFont(new Font("Arial", Font.ITALIC, 12));
         genreLabel.setForeground(Color.WHITE);
 
@@ -41,6 +42,7 @@ public class CardPanel extends JPanel {
         JLabel imageLabel = new JLabel();
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         setImage(imageLabel, card.getImageUrl());
+        
 
 
         // Layout structure
