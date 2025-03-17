@@ -38,8 +38,8 @@ public class catalogUI extends JFrame {
 
         setTitle("Video Game Catalog");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
-        setMinimumSize(new Dimension(800, 600)); // Set minimum window size
+        setSize(1000, 600);
+        setMinimumSize(new Dimension(850, 600)); // Set minimum window size
         setLocationRelativeTo(null);
         getContentPane().setBackground(Color.DARK_GRAY);
         this.setBackground(Color.DARK_GRAY);
@@ -129,15 +129,17 @@ public class catalogUI extends JFrame {
         titlePanel.add(titleLabel);
 
 // Logo Label (Placeholder Image)
-        ImageIcon logoIcon = new ImageIcon("logo.png"); // Ensure this file exists in your project
+        ImageIcon logoIcon = new ImageIcon("src/main/logo/logo1.png"); // Ensure this file exists in your project
         Image img = logoIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(img));
-        titlePanel.add(logoLabel);
+        logoLabel.setMaximumSize(new Dimension(50, 50));
+
 
 // Add title panel between sortingPanel and game cards
         topPanel = new JPanel(new BorderLayout());
         topPanel.add(sortingPanel, BorderLayout.CENTER);
         topPanel.add(titlePanel, BorderLayout.NORTH);
+        topPanel.add(logoLabel, BorderLayout.WEST);
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -148,14 +150,17 @@ public class catalogUI extends JFrame {
         // Card Display Panel (For Game Cards)
         cardContainer = new JPanel();
         cardContainer.setBackground(Color.decode(blue));
-        cardContainer.setLayout(new GridLayout(0, 3, 10, 10)); // 0 rows (dynamic), 3 columns, 10px spacing
+        cardContainer.setLayout(new GridLayout(0, 4, 10, 10)); // 0 rows (dynamic), 3 columns, 10px spacing
         cardContainer.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
 
         JScrollPane scrollPane = new JScrollPane(cardContainer, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setPreferredSize(new Dimension(650, 200));
         scrollPane.setBorder(BorderFactory.createEmptyBorder(40, 100, 20, 100));
         scrollPane.setBackground(Color.DARK_GRAY);
-        scrollPane.getVerticalScrollBar().setBlockIncrement(2);
+
+        JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
+        verticalBar.setUnitIncrement(20); // Default is usually 1-5
+        verticalBar.setBlockIncrement(100);
 
         add(scrollPane, BorderLayout.CENTER);
 

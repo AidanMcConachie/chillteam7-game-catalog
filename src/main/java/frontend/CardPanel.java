@@ -49,6 +49,7 @@ public class CardPanel extends JPanel {
         add(titleLabel, BorderLayout.NORTH);
         add(imageLabel, BorderLayout.CENTER);
         add(genreLabel, BorderLayout.SOUTH);
+        this.setBackground(Color.DARK_GRAY);
 
 
         // Add description in a scroll pane (optional)
