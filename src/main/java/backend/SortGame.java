@@ -1,21 +1,20 @@
 package backend;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SortGame {
+    private static List<Card> originalList;
+    private static boolean isFiltered = false;
 
-    private static List<Card> originalList; // Store the original game list
-    private static boolean isFiltered = false; // Track if filtering is active
-
-    // Initialize with original game list (Call this in `Main.java`)
     public static void setOriginalList(List<Card> games) {
         originalList = games;
     }
 
-    //Handles sorting for Name & ID (in Ascending/Descending order)
-    // As well as Genre (specific genre)
+    // Handles Sorting (Name, ID, Genre)
     public static List<Card> sortGames(List<Card> games, String criteria, boolean ascending) {
         Comparator<Card> comparator;
 
@@ -23,14 +22,13 @@ public class SortGame {
             case "name":
                 comparator = Comparator.comparing(Card::getName, String.CASE_INSENSITIVE_ORDER);
                 break;
-            case "genre":
-                comparator = Comparator.comparing(Card::getGenre, String.CASE_INSENSITIVE_ORDER);
-                break;
             case "id":
                 comparator = Comparator.comparingInt(game -> Integer.parseInt(game.getId()));
                 break;
+            case "genre":
+                comparator = Comparator.comparing(game -> String.join(", ", game.getGenres()), String.CASE_INSENSITIVE_ORDER);
+                break;
             default:
-                System.out.println("Invalid sorting criteria. Sorting by name as default.");
                 comparator = Comparator.comparing(Card::getName, String.CASE_INSENSITIVE_ORDER);
         }
 
@@ -41,29 +39,45 @@ public class SortGame {
         return games.stream().sorted(comparator).collect(Collectors.toList());
     }
 
-    //Returns only games that match a specific genre chosen by the user
+    //Handles Genre Filtering
     public static List<Card> filterByGenre(String genre) {
-        if (originalList == null) return null; // prevent null issues if the game list becomes null for some reason
+        if (originalList == null) return null;
 
         if (genre == null || genre.equalsIgnoreCase("All Genres")) {
             isFiltered = false;
-            return originalList; // Show all games
+            return originalList;
         }
 
         isFiltered = true;
         return originalList.stream()
-                .filter(game -> genre.equalsIgnoreCase(game.getGenre()))
+                .filter(game -> {
+                    for (String g : game.getGenres()) {
+                        if (genre.equalsIgnoreCase(g)) return true;
+                    }
+                    return false;
+                })
                 .collect(Collectors.toList());
     }
 
-    //Resets the game list
+    // Handles Reverting Genre Filter
     public static List<Card> revertFilter() {
         isFiltered = false;
         return originalList;
     }
 
-    //Check if Filtering is Active
-    public static boolean isFilterActive() {
-        return isFiltered;
+    //Checks if Filtering is Active
+//    public static boolean isFilterActive() {
+//        return isFiltered;
+//    }
+
+    //Generates Unique Genres for Dropdown
+    public static Set<String> getUniqueGenres() { //makes sure that the dropdown doesnt recieve gamelist duplicate genres
+        Set<String> uniqueGenres = new HashSet<>(); //hashset to ensure uniqueness
+        for (Card card : originalList) {
+            for (String genre : card.getGenres()) {
+                uniqueGenres.add(genre);
+            }
+        }
+        return uniqueGenres;
     }
 }

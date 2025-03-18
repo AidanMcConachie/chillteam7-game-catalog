@@ -14,15 +14,18 @@ public class CardPanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(150, 250)); // Adjust as needed
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        this.setBackground(Color.WHITE);
+        this.setBackground(Color.DARK_GRAY);
 
         // Title label
         JLabel titleLabel = new JLabel(card.getName(), SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        titleLabel.setForeground(Color.WHITE);
 
         // Genre label
-        JLabel genreLabel = new JLabel("Genre: " + card.getGenre(), SwingConstants.CENTER);
+        String genreText = String.join(", ", card.getGenres()); // Convert array to a comma-separated string
+        JLabel genreLabel = new JLabel("Genre: " + genreText, SwingConstants.CENTER);
         genreLabel.setFont(new Font("Arial", Font.ITALIC, 12));
+        genreLabel.setForeground(Color.WHITE);
 
 
         // Description area
@@ -32,18 +35,21 @@ public class CardPanel extends JPanel {
         descriptionArea.setEditable(false);
         descriptionArea.setFocusable(false);
         descriptionArea.setBackground(getBackground());
+        descriptionArea.setForeground(Color.white);
 
 
         // Image label
         JLabel imageLabel = new JLabel();
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         setImage(imageLabel, card.getImageUrl());
+        
 
 
         // Layout structure
         add(titleLabel, BorderLayout.NORTH);
         add(imageLabel, BorderLayout.CENTER);
         add(genreLabel, BorderLayout.SOUTH);
+        this.setBackground(Color.DARK_GRAY);
 
 
         // Add description in a scroll pane (optional)
