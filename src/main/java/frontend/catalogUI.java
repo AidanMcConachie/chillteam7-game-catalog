@@ -297,7 +297,10 @@ public class catalogUI extends JFrame {
         scrollPane.setPreferredSize(new Dimension(650, 200));
         scrollPane.setBorder(BorderFactory.createEmptyBorder(40, 100, 20, 100));
         scrollPane.setBackground(Color.DARK_GRAY);
-        scrollPane.getVerticalScrollBar().setBlockIncrement(2);
+
+        JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
+        verticalBar.setUnitIncrement(20); // Default is usually 1-5
+        verticalBar.setBlockIncrement(100);
 
         // Restore the main components
         add(topPanel, BorderLayout.NORTH);
