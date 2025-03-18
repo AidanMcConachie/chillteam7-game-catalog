@@ -4,6 +4,8 @@ import org.postgresql.jdbc2.ArrayAssistant;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 
@@ -29,27 +31,31 @@ public class ReviewDatabase{
     }
     public void addReview(int id, String username, int rating, String reviewText) throws SQLException {
         Connection connection = getConnection();
-        String query = "INSERT INTO reviews (id, username, rating, reviewText, datePosted) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        connection.setAutoCommit(false);
+        String query = "INSERT INTO reviews (id, username, rating, reviewText, datePosted) VALUES (?, ?, ?, ?, ?)";
+
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String date = LocalDateTime.now().format(format);
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, id);
         preparedStatement.setString(2, username);
         preparedStatement.setInt(3, rating);
         preparedStatement.setString(4, reviewText);
-        preparedStatement.setDate(5, Date.valueOf(LocalDate.now())); // Need to test
+        preparedStatement.setString(5, date); // Need to test
         preparedStatement.executeUpdate();
         preparedStatement.close();
-        connection.close();
+        connection.commit();
     }
-    public ArrayList<String[]> getReviews(int steamid) throws SQLException {
-        String query = "SELECT * FROM reviews WHERE steamid = ?";
+    public ArrayList<String[]> getReviews(int id) throws SQLException {
+        String query = "SELECT * FROM reviews WHERE id = ?";
         ArrayList<String[]> reviews = new ArrayList<>();
         try{
             Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, steamid);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
+            while(resultSet.next()) {
                 reviews.add(new String[]{resultSet.getString("username"), resultSet.getString("rating"), resultSet.getString("reviewText"), resultSet.getString("datePosted")});
             }
         } catch (SQLException e) {

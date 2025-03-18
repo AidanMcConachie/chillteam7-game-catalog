@@ -61,7 +61,6 @@ public class CatalogDatabase {
                 preparedStatement.executeUpdate(); // this might just be "execute"
                 preparedStatement.close();
                 connection.commit();
-                //connection.close();
 
             } catch (SQLException e) {
                 e.printStackTrace();
