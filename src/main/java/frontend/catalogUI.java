@@ -1,10 +1,11 @@
 package frontend;
 
 import backend.Card;
+import backend.CatalogDatabase;
 import backend.SortGame;
 import backend.SearchGames;
 
-import backend.Database;
+import backend.CatalogDatabase;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -25,13 +26,13 @@ public class catalogUI extends JFrame {
     private JButton searchButton;   //IMPLEMENTED: Search Button
     private List<Card> gameList;
     private List<Card> displayedList;
-    private Database database;
+    private CatalogDatabase database;
     private String blue = "#47797d";
 
-    public catalogUI(List<Card> gameList, Database database) {
+    public catalogUI(List<Card> gameList, CatalogDatabase database) {
         this.gameList = gameList;
         this.displayedList = gameList; // Initially, display all games
-        this.database = new Database();
+        this.database = new CatalogDatabase();
         SortGame.setOriginalList(gameList); // Sets original list in SortGame
         this.displayedList = gameList;
         SortGame.setOriginalList(gameList);

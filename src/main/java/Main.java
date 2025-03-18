@@ -1,5 +1,5 @@
 import backend.Card;
-import backend.Database;
+import backend.CatalogDatabase;
 import backend.SteamAPIFetcher;
 import frontend.catalogUI;
 
@@ -12,11 +12,11 @@ import java.util.List;
 
 
 public class Main {
-    Database database;
+    CatalogDatabase database;
 
     public static void main(String[] args) throws Exception {
 
-        Database database = new Database();
+        CatalogDatabase database = new CatalogDatabase();
         database.clear();
 //        database.addGame(730);  // cs 2
 //        database.addGame(440); // Team fortress 2
