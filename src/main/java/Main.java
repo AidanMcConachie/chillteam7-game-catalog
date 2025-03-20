@@ -16,55 +16,41 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         Database database = new Database();
-        database.clear();
-        List<Integer> gameIds = Arrays.asList(
-                730,    // Counter-Strike: Global Offensive
-                570,    // Dota 2
-                440,    // Team Fortress 2
-                550,    // Left 4 Dead 2
-                578080, // PUBG: BATTLEGROUNDS
-                271590, // Grand Theft Auto V
-                359550, // Tom Clancy's Rainbow Six Siege
-                252490, // Rust
-                620,    // Portal 2
-                4000,   // Garry's Mod
-                236390, // War Thunder
-                105600, // Terraria
-                220,    // Half-Life 2
-                304930, // Unturned
-                8930,   // Sid Meier's Civilization V
-                72850,  // The Elder Scrolls V: Skyrim
-                377160, // Fallout 4
-                582010, // Monster Hunter: World
-                271590, // Grand Theft Auto V
-                292030, // The Witcher 3: Wild Hunt
-                374320, // DARK SOULS III
-                413150 // Stardew Valley
-        );
+//        List<Integer> gameIds = Arrays.asList(
+//                730,    // Counter-Strike: Global Offensive
+//                570,    // Dota 2
+//                440,    // Team Fortress 2
+//                550,    // Left 4 Dead 2
+//                578080, // PUBG: BATTLEGROUNDS
+//                271590, // Grand Theft Auto V
+//                359550, // Tom Clancy's Rainbow Six Siege
+//                252490, // Rust
+//                620,    // Portal 2
+//                4000,   // Garry's Mod
+//                236390, // War Thunder
+//                105600, // Terraria
+//                220,    // Half-Life 2
+//                304930, // Unturned
+//                8930,   // Sid Meier's Civilization V
+//                72850,  // The Elder Scrolls V: Skyrim
+//                377160, // Fallout 4
+//                582010, // Monster Hunter: World
+//                271590, // Grand Theft Auto V
+//                292030, // The Witcher 3: Wild Hunt
+//                374320, // DARK SOULS III
+//                413150 // Stardew Valley
+//        );
 
-        for(Integer gameId : gameIds) {
-            database.addGame(gameId);
-        }
-//        database.addGame(730);  // cs 2
-//        database.addGame(440); // Team fortress 2
-//        database.addGame(70);      // Half-Life
-//        database.addGame(400);     // Portal
-//        database.addGame(292030);  // The Witcher 3: Wild Hunt
-//        database.addGame(1245620); // Elden Ring
-//
-//        //database.addGame(1174180); // Red Dead Redemption 2
-//        database.addGame(374320);  // Dark Souls III
-//        database.addGame(1091500); // Cyberpunk 2077
-//        database.addGame(945360);  // Among Us
+//        for(Integer gameId : gameIds) {
+//            database.addGame(gameId);
+//        }
 
         int dbcount = database.getAllGameIDs().size();
         System.out.println(dbcount + "   db!");
         System.out.println(Arrays.toString(database.getAllGameIDs().toArray()));
-        // Example cards
-        // TO DO: Replace with database data)
-        List<Card> cards = new ArrayList<>();
 
-        //
+        // Example cards
+        List<Card> cards = new ArrayList<>();
         cards.add(new Card("Half-Life", new String[]{"FPS"}, "12345", "A revolutionary shooter", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYd_woEfxldwowEBzCTIlVV5h-HJsR13iHFQ&s"));
         cards.add(new Card("Portal", new String[]{"Puzzle"}, "67890", "A mind-bending game", "https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Portal_standalonebox.jpg/220px-Portal_standalonebox.jpg"));
 
