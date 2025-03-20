@@ -42,12 +42,14 @@ public class CardPanel extends JPanel {
         JLabel imageLabel = new JLabel();
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         setImage(imageLabel, card.getImageUrl());
+        
 
 
         // Layout structure
         add(titleLabel, BorderLayout.NORTH);
         add(imageLabel, BorderLayout.CENTER);
         add(genreLabel, BorderLayout.SOUTH);
+        this.setBackground(Color.DARK_GRAY);
 
 
         // Add description in a scroll pane (optional)

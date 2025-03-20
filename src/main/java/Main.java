@@ -10,18 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 
 
-import backend.Card;
-import backend.Database;
-import backend.SteamAPIFetcher;
-import frontend.catalogUI;
-
-import javax.swing.*;
-import javax.xml.crypto.Data;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-
 
 public class Main {
     Database database;
@@ -30,13 +18,26 @@ public class Main {
 
         Database database = new Database();
         database.clear();
-        database.addGame(730);
-        database.addGame(440);
+//        database.addGame(730);  // cs 2
+//        database.addGame(440); // Team fortress 2
+//        database.addGame(70);      // Half-Life
+//        database.addGame(400);     // Portal
+//        database.addGame(292030);  // The Witcher 3: Wild Hunt
+//        database.addGame(1245620); // Elden Ring
+//
+//        //database.addGame(1174180); // Red Dead Redemption 2
+//        database.addGame(374320);  // Dark Souls III
+//        database.addGame(1091500); // Cyberpunk 2077
+//        database.addGame(945360);  // Among Us
+
         int dbcount = database.getAllGameIDs().size();
         System.out.println(dbcount + "   db!");
         System.out.println(Arrays.toString(database.getAllGameIDs().toArray()));
         // Example cards
+        // TO DO: Replace with database data)
         List<Card> cards = new ArrayList<>();
+
+        //
         cards.add(new Card("Half-Life", new String[]{"FPS"}, "12345", "A revolutionary shooter", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYd_woEfxldwowEBzCTIlVV5h-HJsR13iHFQ&s"));
         cards.add(new Card("Portal", new String[]{"Puzzle"}, "67890", "A mind-bending game", "https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Portal_standalonebox.jpg/220px-Portal_standalonebox.jpg"));
 
@@ -58,8 +59,7 @@ public class Main {
         // had to change it so passes the `cards` list directly into the `catalogUI` constructor
         SwingUtilities.invokeLater(() -> new catalogUI(cards, database));
 
-        // Create UI instance and add cards
-        //catalogUI gameCatalogue = new catalogUI();
-        //gameCatalogue.addCards(cards);
+
+
     }
 }

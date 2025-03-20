@@ -7,13 +7,15 @@ import backend.SearchGames;
 import backend.Database;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 public class catalogUI extends JFrame {
-    private JPanel cardContainer;
-    private JPanel sidePanel;
-    private JPanel sortingPanel;
+    private JPanel cardContainer; // The panel of all the displayed games
+    private JPanel sidePanel; // the right most panel containing functional buttons (add game, remove game, view wishlist)
+    private JPanel sortingPanel; // The pannel containing all the filter functions
+    private JPanel topPanel; // the top panel containing the application title and sort/search functions
     private JComboBox<String> sortDropdown;
     private JComboBox<String> orderDropdown;
     private JButton filterButton;
@@ -24,6 +26,7 @@ public class catalogUI extends JFrame {
     private List<Card> gameList;
     private List<Card> displayedList;
     private Database database;
+    private String blue = "#47797d";
 
     public catalogUI(List<Card> gameList, Database database) {
         this.gameList = gameList;
@@ -35,28 +38,56 @@ public class catalogUI extends JFrame {
 
         setTitle("Video Game Catalog");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
-        setMinimumSize(new Dimension(800, 600)); // Set minimum window size
+        setSize(1000, 600);
+        setMinimumSize(new Dimension(850, 600)); // Set minimum window size
         setLocationRelativeTo(null);
         getContentPane().setBackground(Color.DARK_GRAY);
         this.setBackground(Color.DARK_GRAY);
 
-        // Side Panel (Contains Add Game Button)
+        ArrayList<Integer> allGames = database.getAllGameIDs();
+
+
+        for(int i = 0; i < allGames.size(); i++){
+            String[] gameInfo = database.fetchAllGameInfo(allGames.get(i));
+            Card newCard = new Card(gameInfo[1], new String[]{gameInfo[5]}, gameInfo[0], gameInfo[2], gameInfo[3]);
+            gameList.add(newCard);
+        }
+
         sidePanel = new JPanel();
         sidePanel.setPreferredSize(new Dimension(100, 600));
-        sidePanel.setBackground(Color.DARK_GRAY);
-        sidePanel.setLayout(new BorderLayout());
+        sidePanel.setBackground(Color.decode(blue)); // Keeping as is
+
+// Use BoxLayout for better height control
+        sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
+        sidePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         JButton addGameButton = new JButton("Add Game");
-        sidePanel.add(addGameButton, BorderLayout.CENTER);
+        JButton removeGameButton = new JButton("Remove Game");
+
+// Set fixed height while allowing width expansion
+        addGameButton.setMaximumSize(new Dimension(100, 20));
+        removeGameButton.setMaximumSize(new Dimension(100, 20));
+
+// Center align buttons horizontally
+        addGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        removeGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+// Add buttons with spacing
+        sidePanel.add(addGameButton);
+        sidePanel.add(Box.createRigidArea(new Dimension(0, 5))); // Small gap
+        sidePanel.add(removeGameButton);
+
+
+
         add(sidePanel, BorderLayout.EAST); // Add to the right
+
 
         addGameButton.addActionListener(e -> showAddGameScreen());
 
         // Sorting UI
         sortingPanel = new JPanel();
         sortingPanel.add(new JLabel("Sort by:"));
-        sortingPanel.setBackground(Color.decode("#47797d"));
+        sortingPanel.setBackground(Color.decode(blue));
 
         sortDropdown = new JComboBox<>(new String[]{"Name", "Genre", "ID"});
         sortingPanel.add(sortDropdown);
@@ -84,17 +115,52 @@ public class catalogUI extends JFrame {
         searchButton = new JButton("Search");
         sortingPanel.add(searchButton);
 
-        add(sortingPanel, BorderLayout.NORTH);
+
+
+        // Create a panel for the title and logo
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER)); // Center elements
+        titlePanel.setBackground(Color.decode(blue)); // Match theme
+
+// Title Label
+        JLabel titleLabel = new JLabel("Gavin's Games");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(Color.WHITE);
+        titlePanel.add(titleLabel);
+
+// Logo Label (Placeholder Image)
+        ImageIcon logoIcon = new ImageIcon("src/main/logo/logo1.png"); // Ensure this file exists in your project
+        Image img = logoIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        JLabel logoLabel = new JLabel(new ImageIcon(img));
+        logoLabel.setMaximumSize(new Dimension(50, 50));
+
+
+// Add title panel between sortingPanel and game cards
+        topPanel = new JPanel(new BorderLayout());
+        topPanel.add(sortingPanel, BorderLayout.CENTER);
+        topPanel.add(titlePanel, BorderLayout.NORTH);
+        topPanel.add(logoLabel, BorderLayout.WEST);
+
+        add(topPanel, BorderLayout.NORTH);
+
+
+
+
 
         // Card Display Panel (For Game Cards)
         cardContainer = new JPanel();
-        cardContainer.setBackground(Color.decode("#47797d"));
-        cardContainer.setLayout(new GridLayout(0, 3, 10, 10)); // 0 rows (dynamic), 3 columns, 10px spacing
+        cardContainer.setBackground(Color.decode(blue));
+        cardContainer.setLayout(new GridLayout(0, 4, 10, 10)); // 0 rows (dynamic), 3 columns, 10px spacing
+        cardContainer.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
 
         JScrollPane scrollPane = new JScrollPane(cardContainer, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setPreferredSize(new Dimension(650, 450));
+        scrollPane.setPreferredSize(new Dimension(650, 200));
         scrollPane.setBorder(BorderFactory.createEmptyBorder(40, 100, 20, 100));
-        scrollPane.getViewport().setBackground(Color.DARK_GRAY);
+        scrollPane.setBackground(Color.DARK_GRAY);
+
+        JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
+        verticalBar.setUnitIncrement(20); // Default is usually 1-5
+        verticalBar.setBlockIncrement(100);
 
         add(scrollPane, BorderLayout.CENTER);
 
@@ -140,13 +206,15 @@ public class catalogUI extends JFrame {
         });
 
         setVisible(true);
+
+
     }
     /**
      * Switches to the "Add Game" screen.
      */
     private void showAddGameScreen() {
         JPanel addGamePanel = new JPanel();
-        addGamePanel.setBackground(Color.decode("#47797d"));
+        addGamePanel.setBackground(Color.decode(blue));
         addGamePanel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -225,20 +293,24 @@ public class catalogUI extends JFrame {
     private void returnToMainScreen() {
         getContentPane().removeAll();
 
-        JScrollPane scrollPane = new JScrollPane(cardContainer);
-        scrollPane.setPreferredSize(new Dimension(650, 450));
+        JScrollPane scrollPane = new JScrollPane(cardContainer, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setPreferredSize(new Dimension(650, 200));
         scrollPane.setBorder(BorderFactory.createEmptyBorder(40, 100, 20, 100));
-        scrollPane.getViewport().setBackground(Color.DARK_GRAY); // Ensure background consistency
         scrollPane.setBackground(Color.DARK_GRAY);
 
+        JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
+        verticalBar.setUnitIncrement(20); // Default is usually 1-5
+        verticalBar.setBlockIncrement(100);
+
         // Restore the main components
+        add(topPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
         add(sidePanel, BorderLayout.EAST);
-        add(sortingPanel, BorderLayout.NORTH);
 
         revalidate();
         repaint();
     }
+
 
     //Update: Calls Backend to Get Unique Genres
 
@@ -283,10 +355,18 @@ public class catalogUI extends JFrame {
      */
     private void displayGames() {
         cardContainer.removeAll();
+
         for (Card card : displayedList) {
-            cardContainer.add(new CardPanel(card));
+            JPanel wrapper = new JPanel();
+            wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.Y_AXIS));
+            wrapper.setMaximumSize(new Dimension(150, 250)); // Prevent stretching
+            wrapper.add(new CardPanel(card));
+
+            cardContainer.add(wrapper);
         }
+
         cardContainer.revalidate();
         cardContainer.repaint();
     }
+
 }
