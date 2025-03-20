@@ -15,60 +15,31 @@ public class Main {
     Database database;
 
     public static void main(String[] args) throws Exception {
-
         Database database = new Database();
         database.clear();
         List<Integer> gameIds = Arrays.asList(
                 730,    // Counter-Strike: Global Offensive
-                440,    // Team Fortress 2
                 570,    // Dota 2
-                578080, // PLAYERUNKNOWN'S BATTLEGROUNDS
+                440,    // Team Fortress 2
+                550,    // Left 4 Dead 2
+                578080, // PUBG: BATTLEGROUNDS
                 271590, // Grand Theft Auto V
-                1174180,// Red Dead Redemption 2
-                1245620,// ELDEN RING
-                292030, // The Witcher 3: Wild Hunt
-                1091500,// Cyberpunk 2077
-                945360, // Among Us
                 359550, // Tom Clancy's Rainbow Six Siege
                 252490, // Rust
-                381210, // Dead by Daylight
-                271590, // Grand Theft Auto V
-                582010, // Monster Hunter: World
-                413150, // Stardew Valley
-                8930,   // Sid Meier's Civilization V
-                220,    // Half-Life 2
-                4000,   // Garry's Mod
-                550,    // Left 4 Dead 2
                 620,    // Portal 2
-                72850,  // The Elder Scrolls V: Skyrim
-                238960, // Path of Exile
-                275850, // No Man's Sky
-                377160, // Fallout 4
-                271590, // Grand Theft Auto V
-                582660, // Black Desert Online
-                1085660,// Hades
-                413410, // Factorio
-                359320, // Rocket League
-                252950, // Rocket League
-                227300, // Euro Truck Simulator 2
-                255710, // Cities: Skylines
-                289070, // Sid Meier's Civilization VI
-                359550, // Tom Clancy's Rainbow Six Siege
-                346110, // ARK: Survival Evolved
-                578080, // PLAYERUNKNOWN'S BATTLEGROUNDS
-                271590, // Grand Theft Auto V
-                582010, // Monster Hunter: World
-                413150, // Stardew Valley
-                8930,   // Sid Meier's Civilization V
-                220,    // Half-Life 2
                 4000,   // Garry's Mod
-                550,    // Left 4 Dead 2
-                620,    // Portal 2
+                236390, // War Thunder
+                105600, // Terraria
+                220,    // Half-Life 2
+                304930, // Unturned
+                8930,   // Sid Meier's Civilization V
                 72850,  // The Elder Scrolls V: Skyrim
-                238960, // Path of Exile
-                275850, // No Man's Sky
                 377160, // Fallout 4
-                582660  // Black Desert Online
+                582010, // Monster Hunter: World
+                271590, // Grand Theft Auto V
+                292030, // The Witcher 3: Wild Hunt
+                374320, // DARK SOULS III
+                413150 // Stardew Valley
         );
 
         for(Integer gameId : gameIds) {
