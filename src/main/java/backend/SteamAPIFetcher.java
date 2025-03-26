@@ -75,7 +75,7 @@ public class SteamAPIFetcher {
         return info;
     }
     // TODO: add a steam status function formally
-    public static boolean validateAPI(int steamID) throws IOException {
+    public boolean validateAPI(int steamID) throws IOException {
         URL url = new URL("https://store.steampowered.com/api/appdetails?appids=" + steamID);
         StringBuilder stringBuilder = new StringBuilder();
         try(InputStream input = url.openStream()) {

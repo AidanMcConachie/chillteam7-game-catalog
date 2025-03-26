@@ -1,5 +1,6 @@
 import backend.Card;
-import backend.Database;
+import backend.CatalogDatabase;
+import backend.ReviewDatabase;
 import backend.SteamAPIFetcher;
 import frontend.catalogUI;
 
@@ -12,10 +13,11 @@ import java.util.List;
 
 
 public class Main {
-    Database database;
+    CatalogDatabase database;
 
     public static void main(String[] args) throws Exception {
-        Database database = new Database();
+        CatalogDatabase database = new CatalogDatabase();
+        ReviewDatabase reviews = new ReviewDatabase();
 //        List<Integer> gameIds = Arrays.asList(
 //                730,    // Counter-Strike: Global Offensive
 //                570,    // Dota 2
