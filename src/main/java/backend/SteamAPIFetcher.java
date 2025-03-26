@@ -7,14 +7,12 @@ package backend;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONString;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.text.NumberFormat;
-import java.util.Arrays;
 
 public class SteamAPIFetcher {
     public SteamAPIFetcher() {
@@ -77,4 +75,18 @@ public class SteamAPIFetcher {
         return info;
     }
     // TODO: add a steam status function formally
+    public static boolean validateAPI(int steamID) throws IOException {
+        URL url = new URL("https://store.steampowered.com/api/appdetails?appids=" + steamID);
+        StringBuilder stringBuilder = new StringBuilder();
+        try(InputStream input = url.openStream()) {
+            InputStreamReader reader = new InputStreamReader(input);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            String line;
+            while((line = bufferedReader.readLine()) != null ) {
+                stringBuilder.append(line);
+            }
+        }
+        JSONObject jsonData = new JSONObject(stringBuilder.toString());
+        return jsonData.getJSONObject(String.valueOf(steamID)).getBoolean("success");
+    }
 }

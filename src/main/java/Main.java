@@ -34,9 +34,9 @@ public class Main {
 //        database.addGame(945360);  // Among Us
 
         List<Card> cards = new ArrayList<>();
-        reviews.clear();
-        reviews.addReview(440, "Username", 5, "Fun game!");
-        reviews.addReview(440, "User", 2, "Boring");
+        //reviews.clear();
+        //reviews.addReview(440, "Username", 5, "Fun game!");
+        //reviews.addReview(440, "User", 2, "Boring");
         ArrayList<String[]> tf2Reviews = reviews.getReviews(440);
         for(int i = 0; i < tf2Reviews.size(); i++){
             System.out.println(Arrays.toString(tf2Reviews.get(i)));

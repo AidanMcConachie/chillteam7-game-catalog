@@ -1,0 +1,9 @@
+Main.class
+backend/SearchGames.class
+backend/CatalogDatabase.class
+backend/SteamAPIFetcher.class
+backend/ReviewDatabase.class
+backend/Card.class
+backend/SortGame.class
+frontend/CardPanel.class
+frontend/catalogUI.class
