@@ -2,6 +2,28 @@
 1) Navigate to the directory: `chillteam7-game-catalog`
 2) Open up command prompt and ensure java and maven are installed by running: `java & maven`
 4) Run the program: `mvn compile exec:java -Dexec.mainClass="Main"`
+
+# Testing (4CB 3TB 3OB)
+| Test ID  | Method/Class                  | Inputs(s)                                                                 | Expected Output(s)           | Testing Approach | Assigned Team Member |
+|----------|-------------------------------|--------------------------------------------------------------------------|------------------------------|------------------|----------------------|
+| UT-01-CB | Card (Constructor and Getters)| "Zelda", {"Adventure"}, "1", "A legend of Zelda game", "zelda.jpg"        | Getters return correct values| Automated (Junit)| Alexis               |
+| UT-02-CB | Card (Constructor and Getters)| null values for all fields                                                | Getters return null          | Automated (Junit)| Alexis               |
+| UT-03-CB | Card (Constructor and Getters)| "", [""], "", "", ""                                                      | Getters return empty values  | Automated (Junit)| Alexis               |
+| UT-04-CB | Card.toString()               | Card("Zelda", {"Adventure"}, "1", "A legend of Zelda game", "zelda.jpg")  | String contains correct values| Automated (Junit)| Alexis               |
+
+| Test ID   | Components Involved               | Preconditions                        | Steps                         | Expected Result                         | Assigned Team Member |
+|-----------|-----------------------------------|--------------------------------------|-------------------------------|-----------------------------------------|----------------------|
+| IT-01-TB  | catalogueUI & Card & Database     | Database has data or mock data.      | Run main                      | Cards appear in the catalogueUI         | Renuston             |
+| IT-02-TB  | catalogueUI                       | Database                             | Run main                      | Cards get                               | Manu                 |
+| IT-03-TB  | Card & SortGame & Database        | Database has data or mock data.      | Run main and apply sorting    | Cards sorted in correct order in catalogueUI |                      |
+| IT-04-TB  | catalogueUI & Card & SearchGames & Database | Database has data or mock data.      | Run main then search for a game | Cards with correct name will appear in catalogueUI | Tony                 |
+
+| Test ID  | Scenario            | Preconditions       | Steps                           | Expected outcome                                | Assigned Team Member |
+|----------|---------------------|---------------------|---------------------------------|------------------------------------------------|----------------------|
+| ST-01-OB | Sorting for games   | Program is running  | Apply sorting of choice         | UI should show to the user games in correct order | Alexis               |
+| ST-02-OB | Searching for games | Program is running  | Search for a game and apply search | UI should show to the user games with that name  | Alexis               |
+| ST-03-OB | Adding a game       | Program is running  | Click add game button           | UI should show the newly added game             | Alexis               |
+
 ---
 # Burndown Chart as of Finishing Iteration 2
 ![IMG_2737](https://github.com/user-attachments/assets/4d1141c0-d2de-4a02-923d-bab3967c4f6a)
