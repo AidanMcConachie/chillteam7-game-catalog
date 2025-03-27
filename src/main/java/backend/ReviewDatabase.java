@@ -1,15 +1,9 @@
 package backend;
 
-import org.postgresql.jdbc2.ArrayAssistant;
-
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
-
-// TODO: Test this class (WIP!)
 
 public class ReviewDatabase{
     public static String reviewsJdbcURL = "jdbc:sqlite:database/reviews.db";
