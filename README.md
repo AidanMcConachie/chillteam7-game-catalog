@@ -15,8 +15,7 @@
 |-----------|-----------------------------------|--------------------------------------|-------------------------------|-----------------------------------------|----------------------|
 | IT-01-TB  | catalogueUI & Card & Database     | Database has data or mock data.      | Run main                      | Cards appear in the catalogueUI         | Renuston             |
 | IT-02-TB  | catalogueUI                       | Database                             | Run main                      | Cards get                               | Manu                 |
-| IT-03-TB  | Card & SortGame & Database        | Database has data or mock data.      | Run main and apply sorting    | Cards sorted in correct order in catalogueUI |                      |
-| IT-04-TB  | catalogueUI & Card & SearchGames & Database | Database has data or mock data.      | Run main then search for a game | Cards with correct name will appear in catalogueUI | Tony                 |
+| IT-03-TB  | catalogueUI & Card & SortGame & Database | Database has data or mock data.      | Run main and apply sorting    | Cards sorted in correct order in catalogueUI | Tony                 |
 
 | Test ID  | Scenario            | Preconditions       | Steps                           | Expected outcome                                | Assigned Team Member |
 |----------|---------------------|---------------------|---------------------------------|------------------------------------------------|----------------------|
