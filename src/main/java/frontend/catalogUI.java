@@ -5,8 +5,11 @@ import backend.Database;
 import backend.SortGame;
 import backend.SearchGames;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -260,6 +263,54 @@ public class catalogUI extends JFrame {
         backButton.addActionListener(e -> returnToMainScreen());
     }
 
+    public void showGameDetails(Card card) {
+        getContentPane().removeAll();
+
+        // Create a detailed view panel
+        JPanel detailsPanel = new JPanel(new BorderLayout());
+        detailsPanel.setBackground(Color.decode(blue));
+
+        // Back button to return to catalog
+        JButton backButton = new JButton("Back to Catalog");
+        backButton.addActionListener(e -> returnToMainScreen());
+
+        // Create a panel for the game details
+        JPanel gameDetailsPanel = new JPanel(new GridBagLayout());
+        gameDetailsPanel.setBackground(Color.decode(blue));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+
+        // Add game details
+        gameDetailsPanel.add(new JLabel("Name: " + card.getName()), gbc);
+        gbc.gridy++;
+        gameDetailsPanel.add(new JLabel("Genre: " + String.join(", ", card.getGenres())), gbc);
+        gbc.gridy++;
+        gameDetailsPanel.add(new JLabel("ID: " + card.getId()), gbc);
+        gbc.gridy++;
+        gameDetailsPanel.add(new JLabel("Description: " + card.getDescription()), gbc);
+
+        // Add the image (larger than in the card view)
+        try {
+            URL imageUrl = new URL(card.getImageUrl());
+            BufferedImage image = ImageIO.read(imageUrl);
+            ImageIcon icon = new ImageIcon(image.getScaledInstance(300, -1, Image.SCALE_SMOOTH));
+            gameDetailsPanel.add(new JLabel(icon), gbc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        detailsPanel.add(backButton, BorderLayout.NORTH);
+        detailsPanel.add(gameDetailsPanel, BorderLayout.CENTER);
+
+        add(detailsPanel);
+        revalidate();
+        repaint();
+    }
+
     /**
      * Restores the main catalog screen.
      */
@@ -304,13 +355,13 @@ public class catalogUI extends JFrame {
         cardContainer.removeAll();
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10); // Padding around each card
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         for (Card card : displayedList) {
-            CardPanel cardPanel = new CardPanel(card);
-            gbc.gridx = (cardContainer.getComponentCount() % 4); // 4 columns
-            gbc.gridy = (cardContainer.getComponentCount() / 4); // Dynamic rows
+            CardPanel cardPanel = new CardPanel(card, this); // Make sure 'this' is passed here
+            gbc.gridx = (cardContainer.getComponentCount() % 4);
+            gbc.gridy = (cardContainer.getComponentCount() / 4);
             cardContainer.add(cardPanel, gbc);
         }
 

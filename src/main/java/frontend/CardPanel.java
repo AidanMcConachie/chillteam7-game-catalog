@@ -3,19 +3,37 @@ package frontend;
 import backend.Card;
 import javax.swing.*;
 import java.awt.*;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.net.URL;
 
+// update the class such that each card item listens for mouse clicks, becomes clickable
 public class CardPanel extends JPanel {
     private Card card;
     private BufferedImage image;
+    private catalogUI parentUI;
 
-    public CardPanel(Card card) {
+    public CardPanel(Card card, catalogUI parentUI) {
         this.card = card;
+        this.parentUI = parentUI;
         setPreferredSize(new Dimension(150, 250)); // Set preferred size for the card
         setBackground(Color.darkGray);
         setLayout(new BorderLayout()); // Use BorderLayout for positioning
+
+        // Makes panel react to mouse hover
+        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        // mouse listener for click events
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                parentUI.showGameDetails(card);
+            }
+        });
 
         // Load the image from the URL
         try {
