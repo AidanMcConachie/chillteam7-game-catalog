@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         Database database = new Database();
-//        database.clear();
+        database.clear();
 //        database.addGame(730);  // cs 2
 //        database.addGame(440); // Team fortress 2
 //        database.addGame(70);      // Half-Life

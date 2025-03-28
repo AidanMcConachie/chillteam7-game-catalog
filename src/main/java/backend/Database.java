@@ -11,16 +11,20 @@ clear(), deletes and creates the database, or "clears it" (void)
 
 package backend;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
+import frontend.*;
+import java.util.List;
 
 
 public class Database {
     private static Connection con = null;
     public static String catalogJdbcURL = "jdbc:sqlite:database/catalog.db";
     SteamAPIFetcher fetcher = new SteamAPIFetcher();
-
+    private List<Card> preLoadList;
     public Database() {
+        preLoadList = new ArrayList<>();
     }
 
 
@@ -58,6 +62,28 @@ public class Database {
                 preparedStatement.setString(6, dbArguments[5]);
                 preparedStatement.setString(7, dbArguments[6]);
                 preparedStatement.setString(8, dbArguments[7]);
+
+
+                if (steamid != 0) {
+                    try {
+
+                        String[] gameInfo = this.fetchAllGameInfo(steamid);
+                        if (gameInfo != null && gameInfo.length >= 4) {
+                            Card newCard = new Card(gameInfo[1], new String[]{gameInfo[5]}, gameInfo[0], gameInfo[2], gameInfo[3]);
+                            System.out.println(gameInfo[1] + " - INFO HERE");
+                            preLoadList.add(newCard);
+
+                        }
+                    } catch (Exception ex) {
+                        System.out.println("Invalid steamid: Please enter a valid steamid.");
+                    }
+                } else {
+                    System.out.println("Invalid ID: Please enter a SteamID");
+                }
+
+
+
+
                 preparedStatement.executeUpdate(); // this might just be "execute"
                 preparedStatement.close();
                 connection.commit();
@@ -67,6 +93,10 @@ public class Database {
                 e.printStackTrace();
             }
         }
+    }
+
+    public List<Card> getPreLoadList() {
+        return preLoadList;
     }
 
     public void removeGame(int steamid) {

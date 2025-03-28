@@ -18,6 +18,12 @@ public class CardPanel extends JPanel {
     private catalogUI parentUI;
 
     public CardPanel(Card card, catalogUI parentUI) {
+
+        if (card == null) {
+            System.err.println("Null card passed to CardPanel!");
+            return;
+        }
+
         this.card = card;
         this.parentUI = parentUI;
         setPreferredSize(new Dimension(150, 250)); // Set preferred size for the card
@@ -41,6 +47,7 @@ public class CardPanel extends JPanel {
             image = ImageIO.read(imageUrl);
         } catch (Exception e) {
             e.printStackTrace();
+            System.err.println("Error loading image " + card.getImageUrl());
             // If the image fails to load, use a placeholder or leave it null
         }
 

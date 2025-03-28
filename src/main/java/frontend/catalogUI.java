@@ -28,13 +28,21 @@ public class catalogUI extends JFrame {
     private JButton searchButton;   // Search Button
     private List<Card> gameList;
     private List<Card> displayedList;
+    private List<Card> preLoadList;
     private Database database;
     private String blue = "#47797d";
+
 
     public catalogUI(List<Card> gameList, Database database) {
         this.gameList = gameList;
         this.displayedList = gameList; // Initially, display all games
         this.database = database;
+
+//        for(Card card : gameList){
+//            System.out.println(card.getName());
+//        }
+
+
         SortGame.setOriginalList(gameList); // Sets original list in SortGame
 
         setTitle("Video Game Catalog");
@@ -48,9 +56,7 @@ public class catalogUI extends JFrame {
         // Initialize UI components
         initializeUI();
 
-        // Display games
         displayGames();
-
         setVisible(true);
     }
 
@@ -265,48 +271,7 @@ public class catalogUI extends JFrame {
 
     public void showGameDetails(Card card) {
         getContentPane().removeAll();
-
-        // Create a detailed view panel
-        JPanel detailsPanel = new JPanel(new BorderLayout());
-        detailsPanel.setBackground(Color.decode(blue));
-
-        // Back button to return to catalog
-        JButton backButton = new JButton("Back to Catalog");
-        backButton.addActionListener(e -> returnToMainScreen());
-
-        // Create a panel for the game details
-        JPanel gameDetailsPanel = new JPanel(new GridBagLayout());
-        gameDetailsPanel.setBackground(Color.decode(blue));
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
-
-        // Add game details
-        gameDetailsPanel.add(new JLabel("Name: " + card.getName()), gbc);
-        gbc.gridy++;
-        gameDetailsPanel.add(new JLabel("Genre: " + String.join(", ", card.getGenres())), gbc);
-        gbc.gridy++;
-        gameDetailsPanel.add(new JLabel("ID: " + card.getId()), gbc);
-        gbc.gridy++;
-        gameDetailsPanel.add(new JLabel("Description: " + card.getDescription()), gbc);
-
-        // Add the image (larger than in the card view)
-        try {
-            URL imageUrl = new URL(card.getImageUrl());
-            BufferedImage image = ImageIO.read(imageUrl);
-            ImageIcon icon = new ImageIcon(image.getScaledInstance(300, -1, Image.SCALE_SMOOTH));
-            gameDetailsPanel.add(new JLabel(icon), gbc);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        detailsPanel.add(backButton, BorderLayout.NORTH);
-        detailsPanel.add(gameDetailsPanel, BorderLayout.CENTER);
-
-        add(detailsPanel);
+        add(new GameDetailsPanel(card, gameList, database, this));
         revalidate();
         repaint();
     }
@@ -314,17 +279,22 @@ public class catalogUI extends JFrame {
     /**
      * Restores the main catalog screen.
      */
-    private void returnToMainScreen() {
+    public void returnToMainScreen() {
         getContentPane().removeAll();
+
+        // Recreate the cardContainer to ensure fresh state
+        cardContainer = new JPanel();
+        cardContainer.setBackground(Color.decode(blue));
+        cardContainer.setLayout(new GridBagLayout());
+        cardContainer.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+
+        // Repopulate the games
+        displayGames();
 
         JScrollPane scrollPane = new JScrollPane(cardContainer, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setPreferredSize(new Dimension(650, 200));
         scrollPane.setBorder(BorderFactory.createEmptyBorder(40, 100, 20, 100));
         scrollPane.setBackground(Color.DARK_GRAY);
-
-        JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
-        verticalBar.setUnitIncrement(20); // Default is usually 1-5
-        verticalBar.setBlockIncrement(100);
 
         // Restore the main components
         add(topPanel, BorderLayout.NORTH);
@@ -352,6 +322,10 @@ public class catalogUI extends JFrame {
      * Displays the current list of games.
      */
     private void displayGames() {
+        System.out.println("Displaying " + displayedList.size() + " games");
+        for (Card card : displayedList) {
+            System.out.println(" - " + card.getName());
+        }
         cardContainer.removeAll();
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -367,5 +341,12 @@ public class catalogUI extends JFrame {
 
         cardContainer.revalidate();
         cardContainer.repaint();
+    }
+
+
+
+
+    public List<Card> getdatabaseGameList() {
+        return gameList;
     }
 }
