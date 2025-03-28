@@ -1,3 +1,12 @@
+/*
+showAddGameScreen() -> Switches to the "Add Game" screen (void)
+returnToMainScreen() -> Restores the main catalog screen (void)
+updateGenreDropdown() -> Updates the genre dropdown with unique genres from the database (void)
+genreDropdownContains(String genre) -> Checks if a genre is already in the dropdown (boolean)
+addCards(List<Card> cards) -> Adds game cards to the UI (void)
+displayGames() -> Displays the current list of games in the UI (void)
+*/
+
 package frontend;
 
 import backend.Card;

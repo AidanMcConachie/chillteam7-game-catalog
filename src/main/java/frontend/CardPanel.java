@@ -1,3 +1,11 @@
+/*
+setOriginalList(List<Card> games) -> Sets the original list of games for sorting and filtering (void)
+sortGames(List<Card> games, String criteria, boolean ascending) -> Sorts games by name, ID, or genre (List<Card>)
+filterByGenre(String genre) -> Filters games by a specified genre (List<Card>)
+revertFilter() -> Reverts to the original unfiltered game list (List<Card>)
+getUniqueGenres() -> Retrieves a set of unique genres from the game list (Set<String>)
+*/
+
 package frontend;
 
 import backend.Card;

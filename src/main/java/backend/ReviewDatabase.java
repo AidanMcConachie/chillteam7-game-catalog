@@ -1,3 +1,11 @@
+/*
+getConnection() -> Returns a connection to the reviews database, initializing it if necessary (Connection)
+create() -> Creates the initial reviews table if it does not already exist (void)
+addReview(int id, String username, int rating, String reviewText) -> Adds a review to the database with the given game ID, username, rating, and review text (void)
+getReviews(int id) -> Retrieves all reviews for a specific game ID, returning an ArrayList of String arrays containing username, rating, review text, and date posted (ArrayList<String[]>)
+clear() -> Deletes the reviews table and recreates it, effectively clearing all data (void)
+*/
+
 package backend;
 
 import java.sql.*;
