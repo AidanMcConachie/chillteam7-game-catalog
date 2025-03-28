@@ -1,7 +1,7 @@
 package frontend;
 
 import backend.Card;
-import backend.Database;
+import backend.CatalogDatabase;
 import backend.SortGame;
 import backend.SearchGames;
 
@@ -29,11 +29,11 @@ public class catalogUI extends JFrame {
     private List<Card> gameList;
     private List<Card> displayedList;
     private List<Card> preLoadList;
-    private Database database;
+    private CatalogDatabase database;
     private String blue = "#47797d";
 
 
-    public catalogUI(List<Card> gameList, Database database) {
+    public catalogUI(List<Card> gameList, CatalogDatabase database) {
         this.gameList = gameList;
         this.displayedList = gameList; // Initially, display all games
         this.database = database;
@@ -233,7 +233,7 @@ public class catalogUI extends JFrame {
             if (!steamIDText.isEmpty()) {
                 try {
                     int steamID = Integer.parseInt(steamIDText);
-                    database.addGame(steamID);  // Use existing Database instance
+                    database.addGame(steamID);  // Use existing CatalogDatabase instance
 
                     String[] gameInfo = database.fetchAllGameInfo(steamID);
                     if (gameInfo != null && gameInfo.length >= 4) {
@@ -295,6 +295,10 @@ public class catalogUI extends JFrame {
         scrollPane.setPreferredSize(new Dimension(650, 200));
         scrollPane.setBorder(BorderFactory.createEmptyBorder(40, 100, 20, 100));
         scrollPane.setBackground(Color.DARK_GRAY);
+
+        JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
+        verticalBar.setUnitIncrement(20); // Default is usually 1-5
+        verticalBar.setBlockIncrement(100);
 
         // Restore the main components
         add(topPanel, BorderLayout.NORTH);

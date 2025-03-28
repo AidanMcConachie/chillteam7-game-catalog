@@ -7,7 +7,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import backend.Database;
+import backend.CatalogDatabase;
 import frontend.catalogUI;
 import frontend.catalogUI;
 
@@ -15,7 +15,7 @@ import frontend.catalogUI;
 
 public class GameDetailsPanel extends JPanel {
     private catalogUI parentUI;
-    public GameDetailsPanel(Card card, List<Card> gameList, Database database, catalogUI parentUI) {
+    public GameDetailsPanel(Card card, List<Card> gameList, CatalogDatabase database, catalogUI parentUI) {
         this.parentUI = parentUI;
         setLayout(new BorderLayout());
         setBackground(Color.DARK_GRAY);
