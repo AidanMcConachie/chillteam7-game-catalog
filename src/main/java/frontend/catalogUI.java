@@ -116,6 +116,30 @@ public class catalogUI extends JFrame {
         sortingPanel.add(searchButton);
 
 
+        //LIVE SEARCH: Updates as user types
+        searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                liveSearch();
+            }
+
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                liveSearch();
+            }
+
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                liveSearch();
+            }
+
+            private void liveSearch() {
+                String searchQuery = searchField.getText().trim();
+                if (searchQuery.isEmpty()) {
+                    displayedList = gameList;
+                } else {
+                    displayedList = SearchGames.searchByName(searchQuery, gameList);
+                }
+                displayGames();
+            }
+        });
 
         // Create a panel for the title and logo
         JPanel titlePanel = new JPanel();
@@ -270,6 +294,8 @@ public class catalogUI extends JFrame {
                 JOptionPane.showMessageDialog(this, "Please enter a Steam ID.", "Input Error", JOptionPane.WARNING_MESSAGE);
             }
         });
+
+
 
 
         // Back Button (Returns to Main Screen)
