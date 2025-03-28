@@ -15,12 +15,12 @@ import java.sql.*;
 import java.util.ArrayList;
 
 
-public class CatalogDatabase {
+public class Database {
     private static Connection con = null;
     public static String catalogJdbcURL = "jdbc:sqlite:database/catalog.db";
     SteamAPIFetcher fetcher = new SteamAPIFetcher();
 
-    public CatalogDatabase() {
+    public Database() {
     }
 
 
@@ -61,6 +61,7 @@ public class CatalogDatabase {
                 preparedStatement.executeUpdate(); // this might just be "execute"
                 preparedStatement.close();
                 connection.commit();
+                //connection.close();
 
             } catch (SQLException e) {
                 e.printStackTrace();
