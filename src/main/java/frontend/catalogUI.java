@@ -41,6 +41,13 @@ public class catalogUI extends JFrame {
 //            System.out.println(card.getName());
 //        }
 
+        ArrayList<Integer> allGames = database.getAllGameIDs();
+        for(int i = 0; i < allGames.size(); i++){
+            String[] gameInfo = database.fetchAllGameInfo(allGames.get(i));
+            Card newCard = new Card(gameInfo[1], new String[]{gameInfo[5]}, gameInfo[0], gameInfo[2], gameInfo[3], gameInfo[6], gameInfo[7], gameInfo[4]);
+            gameList.add(newCard);
+        }
+
 
         SortGame.setOriginalList(gameList); // Sets original list in SortGame
 
