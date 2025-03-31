@@ -237,7 +237,7 @@ public class catalogUI extends JFrame {
 
                     String[] gameInfo = database.fetchAllGameInfo(steamID);
                     if (gameInfo != null && gameInfo.length >= 4) {
-                        Card newCard = new Card(gameInfo[1], new String[]{gameInfo[5]}, gameInfo[0], gameInfo[2], gameInfo[3]);
+                        Card newCard = new Card(gameInfo[1], new String[]{gameInfo[5]}, gameInfo[0], gameInfo[2], gameInfo[3], gameInfo[6], gameInfo[7], gameInfo[4]);
                         gameList.add(newCard);
                         displayedList = gameList; // Update displayedList to include the new game
                         displayGames(); // Refresh the UI

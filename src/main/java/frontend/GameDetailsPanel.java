@@ -45,32 +45,51 @@ public class GameDetailsPanel extends JPanel {
         }
 
         // Game details
-        JLabel nameLabel = new JLabel(card.getName());
-        nameLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        nameLabel.setForeground(Color.WHITE);
-        nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        contentPanel.add(nameLabel);
+        JLabel nameIDPriceLabel = new JLabel(card.getName() + " (" + card.getId() + "): " + card.getPrice());
+        nameIDPriceLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        nameIDPriceLabel.setForeground(Color.WHITE);
+        nameIDPriceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(nameIDPriceLabel);
 
         contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         JLabel genreLabel = new JLabel("Genres: " + String.join(", ", card.getGenres()));
         genreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         genreLabel.setForeground(Color.WHITE);
-        contentPanel.add(genreLabel);
+
+        JLabel developerPublisherLabel = new JLabel("Developers: " + String.join(", ", card.getDevelopers()) + "\t, Publishers: " + String.join(", ", card.getPublishers()));
+        developerPublisherLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        developerPublisherLabel.setForeground(Color.WHITE);
 
         contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        JTextArea descriptionArea = new JTextArea(card.getDescription());
-        descriptionArea.setLineWrap(true);
-        descriptionArea.setWrapStyleWord(true);
-        descriptionArea.setEditable(false);
-        descriptionArea.setBackground(Color.decode("#47797d"));
-        descriptionArea.setFont(new Font("Arial", Font.PLAIN, 14));
-        descriptionArea.setForeground(Color.WHITE);
-        JScrollPane scrollPane = new JScrollPane(descriptionArea);
-        scrollPane.setPreferredSize(new Dimension(400, 200));
-        scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
-        contentPanel.add(scrollPane);
+//        JTextArea descriptionArea = new JTextArea(card.getDescription());
+//        descriptionArea.setLineWrap(true);
+//        descriptionArea.setWrapStyleWord(true);
+//        descriptionArea.setEditable(false);
+//        descriptionArea.setBackground(Color.decode("#47797d"));
+//        descriptionArea.setFont(new Font("Arial", Font.PLAIN, 14));
+//        descriptionArea.setForeground(Color.WHITE);
+//        JScrollPane scrollPane = new JScrollPane(descriptionArea);
+//        scrollPane.setPreferredSize(new Dimension(400, 200));
+//        scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel descriptionLabel = new JLabel("<html><div style='text-align: center'>" + card.getDescription() + "</div></html>");
+        descriptionLabel.setBackground(Color.decode("#47797d"));
+        descriptionLabel.setForeground(Color.WHITE);
+        descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        descriptionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        descriptionLabel.setOpaque(true); // Required to show background color
+
+        contentPanel.add(descriptionLabel);
+        descriptionLabel.setBackground(Color.decode("#47797d"));
+        descriptionLabel.setForeground(Color.WHITE);
+        descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        descriptionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        contentPanel.add(descriptionLabel);
+        contentPanel.add(genreLabel);
+        contentPanel.add(developerPublisherLabel);
 
         add(contentPanel, BorderLayout.CENTER);
 

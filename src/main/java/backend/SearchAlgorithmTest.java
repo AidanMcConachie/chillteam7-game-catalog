@@ -15,7 +15,7 @@ public class SearchAlgorithmTest {
     public void testAlgorithm() {
         String search = "F";
         testCards = new ArrayList<>();
-        Card finalFantasyCard = new Card("Final Fantasy", new String[]{"RPG"}, "5", "Fantasy role-playing game", "ff.jpg");
+        Card finalFantasyCard = new Card("Final Fantasy", new String[]{"RPG"}, "5", "Fantasy role-playing game", "ff.jpg", "Square Enix", "Square Enix", "$10");
         testCards.add(finalFantasyCard);
         List<Card> results = searchGames(search);
 

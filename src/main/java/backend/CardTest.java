@@ -3,6 +3,7 @@ package backend;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+// TODO: Fix CardTest to include developers, publishers, price for all cases
 public class CardTest {
 
     @Test
@@ -13,9 +14,12 @@ public class CardTest {
         String id = "1";
         String description = "A legend of Zelda game";
         String imageUrl = "zelda.jpg";
+        String developers = "Nintendo";
+        String publishers = "Nintendo";
+        String price = "$10";
 
         // Act
-        Card card = new Card(name, genre, id, description, imageUrl);
+        Card card = new Card(name, genre, id, description, imageUrl, developers, publishers, price);
 
         // Assert
         assertEquals(name, card.getName(), "getName should return the correct name");
@@ -23,12 +27,15 @@ public class CardTest {
         assertEquals(id, card.getId(), "getId should return the correct id");
         assertEquals(description, card.getDescription(), "getDescription should return the correct description");
         assertEquals(imageUrl, card.getImageUrl(), "getImageUrl should return the correct imageUrl");
+        assertEquals(developers, card.getDevelopers(), "getDevelopers should return the correct developers");
+        assertEquals(publishers, card.getPublishers(), "getPublishers should return the correct publishers");
+        assertEquals(price, card.getPrice(), "getPrice should return the correct price");
     }
 
     @Test
     public void testCardConstructorWithNullValues() {
         // Arrange & Act
-        Card card = new Card(null, null, null, null, null);
+        Card card = new Card(null, null, null, null, null, null, null, null);
 
         // Assert
         assertNull(card.getName(), "getName should return null");
@@ -36,12 +43,15 @@ public class CardTest {
         assertNull(card.getId(), "getId should return null");
         assertNull(card.getDescription(), "getDescription should return null");
         assertNull(card.getImageUrl(), "getImageUrl should return null");
+        assertNull(card.getDevelopers(), "getDevelopers should return null");
+        assertNull(card.getPublishers(), "getPublishers should return null");
+        assertNull(card.getPrice(), "getPrice should return null");
     }
 
     @Test
     public void testCardConstructorWithEmptyStrings() {
         // Arrange & Act
-        Card card = new Card("", new String[]{""}, "", "", "");
+        Card card = new Card("", new String[]{""}, "", "", "", "", "", "");
 
         // Assert
         assertEquals("", card.getName(), "getName should return empty string");
@@ -49,12 +59,15 @@ public class CardTest {
         assertEquals("", card.getId(), "getId should return empty string");
         assertEquals("", card.getDescription(), "getDescription should return empty string");
         assertEquals("", card.getImageUrl(), "getImageUrl should return empty string");
+        assertEquals("", card.getDevelopers(), "getDevelopers should return empty string");
+        assertEquals("", card.getPublishers(), "getPublishers should return empty string");
+        assertEquals("", card.getPrice(), "getPrice should return empty string");
     }
 
     @Test
     public void testToString() {
         // Arrange
-        Card card = new Card("Zelda", new String[]{"Adventure"}, "1", "A legend of Zelda game", "zelda.jpg");
+        Card card = new Card("Zelda", new String[]{"Adventure"}, "1", "A legend of Zelda game", "zelda.jpg", "Nintendo", "Nintendo", "$10");
 
         // Act
         String result = card.toString();
@@ -71,7 +84,7 @@ public class CardTest {
     @Test
     public void testToStringWithNullValues() {
         // Arrange
-        Card card = new Card(null, null, null, null, null);
+        Card card = new Card(null, null, null, null, null, null, null, null);
 
         // Act
         String result = card.toString();
@@ -86,7 +99,7 @@ public class CardTest {
     @Test
     public void testToStringWithEmptyStrings() {
         // Arrange
-        Card card = new Card("", new String[]{""}, "", "", "");
+        Card card = new Card("", new String[]{""}, "", "", "", "", "", "");
 
         // Act
         String result = card.toString();
@@ -102,7 +115,7 @@ public class CardTest {
     public void testToStringWithSpecialCharacters() {
         // Arrange
         Card card = new Card("Name with spaces", new String[]{"Action", "Adventure"}, "ID-123",
-                "Description with special chars: !@#$%^&*()", "image/url.jpg");
+                "Description with special chars: !@#$%^&*()", "image/url.jpg", "Developers/Nintendo", "Publishers", "Price");
 
         // Act
         String result = card.toString();

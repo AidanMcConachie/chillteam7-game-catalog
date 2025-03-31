@@ -16,13 +16,13 @@ public class SortGameTest {
     public void setUp() {
         // Create a test list of cards before each test
         testCards = new ArrayList<>();
-        testCards.add(new Card("Zelda", new String[]{"Adventure"}, "2", "A legend of Zelda game", "zelda.jpg"));
-        testCards.add(new Card("Mario", new String[]{"Platformer"}, "1", "Super Mario Bros game", "mario.jpg"));
-        testCards.add(new Card("Tetris", new String[]{"Puzzle"}, "3", "Classic block puzzle game", "tetris.jpg"));
-        testCards.add(new Card("Final Fantasy", new String[]{"RPG"}, "5", "Fantasy role-playing game", "ff.jpg"));
-        testCards.add(new Card("Counter-Strike", new String[]{"FPS"}, "4", "First-person shooter game", "cs.jpg"));
-        testCards.add(new Card("Age of Empires", new String[]{"Strategy"}, "6", "Historical real-time strategy game", "aoe.jpg"));
-        testCards.add(new Card("Minecraft", new String[]{"Adventure"}, "7", "Block building sandbox game", "minecraft.jpg"));
+        testCards.add(new Card("Zelda", new String[]{"Adventure"}, "2", "A legend of Zelda game", "zelda.jpg", "Nintendo", "Nintendo", "$10"));
+        testCards.add(new Card("Mario", new String[]{"Platformer"}, "1", "Super Mario Bros game", "mario.jpg", "Nintendo", "Nintendo", "$15"));
+        testCards.add(new Card("Tetris", new String[]{"Puzzle"}, "3", "Classic block puzzle game", "tetris.jpg", "Alexey Pajitnov", "Nintendo", "$5"));
+        testCards.add(new Card("Final Fantasy", new String[]{"RPG"}, "5", "Fantasy role-playing game", "ff.jpg", "Square Enix", "Square Enix", "$20"));
+        testCards.add(new Card("Counter-Strike", new String[]{"FPS"}, "4", "First-person shooter game", "cs.jpg", "Valve", "Valve", "$10"));
+        testCards.add(new Card("Age of Empires", new String[]{"Strategy"}, "6", "Historical real-time strategy game", "aoe.jpg", "Ensemble Studios", "Microsoft", "$25"));
+        testCards.add(new Card("Minecraft", new String[]{"Adventure"}, "7", "Block building sandbox game", "minecraft.jpg", "Mojang", "Mojang", "$30"));
 
         // Initialize the original list in SortGame
         SortGame.setOriginalList(new ArrayList<>(testCards));
