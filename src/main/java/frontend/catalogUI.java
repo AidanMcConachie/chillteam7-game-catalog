@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class catalogUI extends JFrame {
@@ -308,27 +309,24 @@ public class catalogUI extends JFrame {
         removeGamePanel.add(submitButton, gbc);
 
         submitButton.addActionListener(e -> {
-            String steamIDText = steamIDField.getText();
+            String steamIDText = steamIDField.getText().trim();
 
             if (!steamIDText.isEmpty()) {
                 try {
+
+                    int steamID = Integer.parseInt(steamIDText);
+                    // remove from database
+                    database.removeGame(steamID);
+
                     // remove from displayedList
                     for (Card card : displayedList) {
-                        if (card.getId() == steamIDText) {
-                            displayedList.remove(card);
+                        if (Objects.equals(card.getId(), steamIDText)) {
                             gameList.remove(card);
-                            preLoadList.remove(card);
-                            database.removeGame(Integer.parseInt(steamIDText));
-                            System.out.println("GAME IN DATABASE: "+ database.isInDatabase(Integer.parseInt(steamIDText)));
-
+                            displayedList = gameList;
+                            displayGames();
+                            returnToMainScreen();
                         }
                     }
-
-                    // remove from datbase
-                    database.removeGame(Integer.parseInt(steamIDText));
-                    System.out.println("GAME IN DATABASE: "+ database.isInDatabase(Integer.parseInt(steamIDText)));
-
-                    returnToMainScreen();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Error fetching game info.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -410,7 +408,7 @@ public class catalogUI extends JFrame {
      * Displays the current list of games.
      */
     private void displayGames() {
-        System.out.println("Displaying " + displayedList.size() + " games");
+//        System.out.println("Displaying " + displayedList.size() + " games");
 //        for (Card card : displayedList) {
 //            System.out.println(" - " + card.getName());
 //        }

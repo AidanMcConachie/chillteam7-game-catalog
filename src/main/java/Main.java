@@ -14,6 +14,7 @@ import java.util.List;
 
 public class Main {
     CatalogDatabase database;
+    ArrayList<Card> cards;
 
     public static void main(String[] args) throws Exception {
         CatalogDatabase database = new CatalogDatabase();
@@ -56,7 +57,6 @@ public class Main {
 
         // had to change it so passes the `cards` list directly into the `catalogUI` constructor
         SwingUtilities.invokeLater(() -> new catalogUI(cards, database, reviews));
-        System.out.println(database.isInDatabase(730));
 
     }
 }
