@@ -55,7 +55,7 @@ public class Main {
         List<Card> cards = new ArrayList<>();
 
         // had to change it so passes the `cards` list directly into the `catalogUI` constructor
-        SwingUtilities.invokeLater(() -> new catalogUI(cards, database));
+        SwingUtilities.invokeLater(() -> new catalogUI(cards, database, reviews));
 
 
 

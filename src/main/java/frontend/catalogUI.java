@@ -31,10 +31,11 @@ public class catalogUI extends JFrame {
     private String blue = "#47797d";
 
 
-    public catalogUI(List<Card> gameList, CatalogDatabase database) {
+    public catalogUI(List<Card> gameList, CatalogDatabase database, ReviewDatabase reviews) {
         this.gameList = gameList;
         this.displayedList = gameList; // Initially, display all games
         this.database = database;
+        this.reviews = reviews;
 
 //        for(Card card : gameList){
 //            System.out.println(card.getName());

@@ -7,6 +7,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import backend.CatalogDatabase;
 import backend.ReviewDatabase;
@@ -81,42 +82,89 @@ public class GameDetailsPanel extends JPanel {
 
         // REVIEW STUFF
         JPanel reviewPanel = new JPanel();
-        reviewPanel.setLayout(new GridBagLayout()); // change this horrible stupid UI
-        // TODO: Scrollpane for reviews
+        reviewPanel.setBackground(Color.GRAY);
+        reviewPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        reviewPanel.setMaximumSize(new Dimension(600, 200));
 
-        JTextField usernameField = new JTextField();
-        usernameField.setText("Enter Username");
-        JTextField descriptionField = new JTextField();
+        //
+        JTextPane infoText = new JTextPane();
+        infoText.setEditable(false);
+        infoText.setText("Add a review: ");
+        infoText.setBackground(Color.GRAY);
+        JPanel reviewArea = new JPanel();
+        reviewArea.setLayout(new BoxLayout(reviewArea, BoxLayout.Y_AXIS));
+        JScrollPane reviewScrollPane = new JScrollPane(reviewArea);
+        reviewScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        reviewScrollPane.setPreferredSize(new Dimension(300, 300));
+
+        JTextField usernameField = new JTextField("Enter Username", 12);
+        Integer[] ratings = new Integer[]{1,2,3,4,5,6,7,8,9,10};
+        JComboBox<Integer> rating = new JComboBox<>(ratings);
+        rating.setSelectedIndex(4);
+
+        JTextArea descriptionField = new JTextArea(3, 12);
         descriptionField.setText("Enter Additional Information...");
-        JSlider ratingSlider = new JSlider(1,10,5);
+        descriptionField.setLineWrap(true);
+        descriptionField.setWrapStyleWord(true);
         JButton addReviewButton = new JButton("Add Review");
-        ratingSlider.setMajorTickSpacing(1);
-        ratingSlider.setMinorTickSpacing(1);
-        ratingSlider.setPaintTicks(true);
-        ratingSlider.setPaintLabels(true);
+        loadReviews(Integer.parseInt(card.getId()), reviewArea, reviews);
+
 
         addReviewButton.addActionListener(e -> {
             try {
-                reviews.addReview(Integer.parseInt(card.getId()), usernameField.getText(), ratingSlider.getValue(), descriptionField.getText());
+                reviews.addReview(Integer.parseInt(card.getId()), usernameField.getText(), (int)rating.getSelectedItem(), descriptionField.getText());
+                usernameField.setText("");
+                rating.setSelectedIndex(4);
+                descriptionField.setText("");
+                loadReviews(Integer.parseInt(card.getId()), reviewArea, reviews);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
         });
 
+        reviewPanel.add(infoText);
         reviewPanel.add(usernameField);
+        reviewPanel.add(rating);
         reviewPanel.add(descriptionField);
-        reviewPanel.add(ratingSlider);
         reviewPanel.add(addReviewButton);
 
         contentPanel.add(descriptionLabel);
         contentPanel.add(genreLabel);
         contentPanel.add(developerPublisherLabel);
         contentPanel.add(reviewPanel);
+        contentPanel.add(reviewScrollPane);
 
         add(contentPanel, BorderLayout.CENTER);
 
         // Back button action
         backButton.addActionListener(e -> {parentUI.returnToMainScreen();
         });
+    }
+
+    private void loadReviews(int id, JPanel reviewArea, ReviewDatabase reviews) {
+        try{
+            reviewArea.removeAll();
+            ArrayList<String[]> reviewsdb = reviews.getReviews(id);
+            for(String[] review : reviewsdb){
+                JPanel reviewCard = new JPanel();
+                reviewCard.setLayout(new BorderLayout());
+                reviewCard.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+
+                JLabel nameDateScorePanel = new JLabel(review[0] + " (" + review[3] + "): " + review[1] +"/10");
+                JTextArea description = new JTextArea(3, 12);
+                description.setText(review[2]);
+                description.setLineWrap(true);
+                description.setWrapStyleWord(true);
+                description.setEditable(false);
+
+                reviewCard.add(nameDateScorePanel, BorderLayout.NORTH);
+                reviewCard.add(description, BorderLayout.CENTER);
+                reviewArea.add(reviewCard);
+            }
+            reviewArea.revalidate();
+            reviewArea.repaint();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
