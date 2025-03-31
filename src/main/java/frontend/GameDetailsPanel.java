@@ -6,8 +6,10 @@ import java.awt.*;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.sql.SQLException;
 import java.util.List;
 import backend.CatalogDatabase;
+import backend.ReviewDatabase;
 import frontend.catalogUI;
 import frontend.catalogUI;
 
@@ -15,7 +17,7 @@ import frontend.catalogUI;
 
 public class GameDetailsPanel extends JPanel {
     private catalogUI parentUI;
-    public GameDetailsPanel(Card card, List<Card> gameList, CatalogDatabase database, catalogUI parentUI) {
+    public GameDetailsPanel(Card card, List<Card> gameList, CatalogDatabase database, ReviewDatabase reviews, catalogUI parentUI) {
         this.parentUI = parentUI;
         setLayout(new BorderLayout());
         setBackground(Color.DARK_GRAY);
@@ -63,16 +65,6 @@ public class GameDetailsPanel extends JPanel {
 
         contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-//        JTextArea descriptionArea = new JTextArea(card.getDescription());
-//        descriptionArea.setLineWrap(true);
-//        descriptionArea.setWrapStyleWord(true);
-//        descriptionArea.setEditable(false);
-//        descriptionArea.setBackground(Color.decode("#47797d"));
-//        descriptionArea.setFont(new Font("Arial", Font.PLAIN, 14));
-//        descriptionArea.setForeground(Color.WHITE);
-//        JScrollPane scrollPane = new JScrollPane(descriptionArea);
-//        scrollPane.setPreferredSize(new Dimension(400, 200));
-//        scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel descriptionLabel = new JLabel("<html><div style='text-align: center'>" + card.getDescription() + "</div></html>");
         descriptionLabel.setBackground(Color.decode("#47797d"));
@@ -87,9 +79,39 @@ public class GameDetailsPanel extends JPanel {
         descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         descriptionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // REVIEW STUFF
+        JPanel reviewPanel = new JPanel();
+        reviewPanel.setLayout(new GridBagLayout()); // change this horrible stupid UI
+        // TODO: Scrollpane for reviews
+
+        JTextField usernameField = new JTextField();
+        usernameField.setText("Enter Username");
+        JTextField descriptionField = new JTextField();
+        descriptionField.setText("Enter Additional Information...");
+        JSlider ratingSlider = new JSlider(1,10,5);
+        JButton addReviewButton = new JButton("Add Review");
+        ratingSlider.setMajorTickSpacing(1);
+        ratingSlider.setMinorTickSpacing(1);
+        ratingSlider.setPaintTicks(true);
+        ratingSlider.setPaintLabels(true);
+
+        addReviewButton.addActionListener(e -> {
+            try {
+                reviews.addReview(Integer.parseInt(card.getId()), usernameField.getText(), ratingSlider.getValue(), descriptionField.getText());
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        reviewPanel.add(usernameField);
+        reviewPanel.add(descriptionField);
+        reviewPanel.add(ratingSlider);
+        reviewPanel.add(addReviewButton);
+
         contentPanel.add(descriptionLabel);
         contentPanel.add(genreLabel);
         contentPanel.add(developerPublisherLabel);
+        contentPanel.add(reviewPanel);
 
         add(contentPanel, BorderLayout.CENTER);
 

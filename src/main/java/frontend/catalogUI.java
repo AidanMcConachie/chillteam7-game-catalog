@@ -1,9 +1,6 @@
 package frontend;
 
-import backend.Card;
-import backend.CatalogDatabase;
-import backend.SortGame;
-import backend.SearchGames;
+import backend.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -30,6 +27,7 @@ public class catalogUI extends JFrame {
     private List<Card> displayedList;
     private List<Card> preLoadList;
     private CatalogDatabase database;
+    private ReviewDatabase reviews;
     private String blue = "#47797d";
 
 
@@ -271,7 +269,7 @@ public class catalogUI extends JFrame {
 
     public void showGameDetails(Card card) {
         getContentPane().removeAll();
-        add(new GameDetailsPanel(card, gameList, database, this));
+        add(new GameDetailsPanel(card, gameList, database, reviews , this));
         revalidate();
         repaint();
     }
