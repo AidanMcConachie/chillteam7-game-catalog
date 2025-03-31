@@ -49,15 +49,14 @@ public class Main {
 
         int dbcount = database.getAllGameIDs().size();
         System.out.println(dbcount + "   db!");
-        System.out.println(Arrays.toString(database.getAllGameIDs().toArray()));
+//        System.out.println(Arrays.toString(database.getAllGameIDs().toArray()));
 
         // Example cards
         List<Card> cards = new ArrayList<>();
 
         // had to change it so passes the `cards` list directly into the `catalogUI` constructor
         SwingUtilities.invokeLater(() -> new catalogUI(cards, database, reviews));
-
-
+        System.out.println(database.isInDatabase(730));
 
     }
 }

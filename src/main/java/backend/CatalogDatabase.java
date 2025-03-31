@@ -74,7 +74,7 @@ public class CatalogDatabase {
         try {
             Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, steamid);
+            preparedStatement.setString(1, steamid+"");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -139,18 +139,19 @@ public class CatalogDatabase {
         return ids;
     }
     public boolean isInDatabase(int steamid) {
-        String query = "SELECT id FROM catalog WHERE id = ?";
+        String query = "SELECT 1 FROM catalog WHERE id = ?";
         try{
             Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, steamid);
-            if(preparedStatement.executeQuery().next()) {
-                return true;
+            //preparedStatement.setInt(1, steamid);
+            preparedStatement.setString(1, steamid + "");
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                return resultSet.next();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return false;
+
     }
 
 }

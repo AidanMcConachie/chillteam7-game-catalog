@@ -24,7 +24,7 @@ public class catalogUI extends JFrame {
     private JTextField searchField; // Search Bar
     private JButton searchButton;   // Search Button
     private List<Card> gameList;
-    private List<Card> displayedList;
+    public List<Card> displayedList;
     private List<Card> preLoadList;
     private CatalogDatabase database;
     private ReviewDatabase reviews;
@@ -153,6 +153,7 @@ public class catalogUI extends JFrame {
 
         // Add Game Button Action Listener
         addGameButton.addActionListener(e -> showAddGameScreen());
+        removeGameButton.addActionListener(e -> showRemoveGameScreen());
 
         // Filter Button Logic
         filterButton.addActionListener(e -> {
@@ -275,6 +276,83 @@ public class catalogUI extends JFrame {
         backButton.addActionListener(e -> returnToMainScreen());
     }
 
+    private void showRemoveGameScreen(){
+        JPanel removeGamePanel = new JPanel();
+        removeGamePanel.setBackground(Color.decode(blue));
+        removeGamePanel.setLayout(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        // Title Label
+        JLabel titleLabel = new JLabel("Remove a Game");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        removeGamePanel.add(titleLabel, gbc);
+
+        // Steam ID Label
+        gbc.gridy++;
+        JLabel steamIDLabel = new JLabel("Enter Steam ID:");
+        removeGamePanel.add(steamIDLabel, gbc);
+
+        // Steam ID Input Field
+        gbc.gridx = 1;
+        JTextField steamIDField = new JTextField(15);
+        removeGamePanel.add(steamIDField, gbc);
+
+        // Submit Button
+        gbc.gridy++;
+        gbc.gridx = 0;
+        JButton submitButton = new JButton("Submit");
+        removeGamePanel.add(submitButton, gbc);
+
+        submitButton.addActionListener(e -> {
+            String steamIDText = steamIDField.getText();
+
+            if (!steamIDText.isEmpty()) {
+                try {
+                    // remove from displayedList
+                    for (Card card : displayedList) {
+                        if (card.getId() == steamIDText) {
+                            displayedList.remove(card);
+                            gameList.remove(card);
+                            preLoadList.remove(card);
+                            database.removeGame(Integer.parseInt(steamIDText));
+                            System.out.println("GAME IN DATABASE: "+ database.isInDatabase(Integer.parseInt(steamIDText)));
+
+                        }
+                    }
+
+                    // remove from datbase
+                    database.removeGame(Integer.parseInt(steamIDText));
+                    System.out.println("GAME IN DATABASE: "+ database.isInDatabase(Integer.parseInt(steamIDText)));
+
+                    returnToMainScreen();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Error fetching game info.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Error fetching game info.", "Error: Empty Field", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        // Back Button (Returns to Main Screen)
+        gbc.gridx = 1;
+        JButton backButton = new JButton("Back");
+        removeGamePanel.add(backButton, gbc);
+
+        // Clear UI and Add New Panel
+        getContentPane().removeAll();
+        add(removeGamePanel, BorderLayout.CENTER);
+        revalidate();
+        repaint();
+
+        // Back button functionality
+        backButton.addActionListener(e -> returnToMainScreen());
+    }
+
+
+
     public void showGameDetails(Card card) {
         getContentPane().removeAll();
         add(new GameDetailsPanel(card, gameList, database, reviews , this));
@@ -333,9 +411,9 @@ public class catalogUI extends JFrame {
      */
     private void displayGames() {
         System.out.println("Displaying " + displayedList.size() + " games");
-        for (Card card : displayedList) {
-            System.out.println(" - " + card.getName());
-        }
+//        for (Card card : displayedList) {
+//            System.out.println(" - " + card.getName());
+//        }
         cardContainer.removeAll();
 
         GridBagConstraints gbc = new GridBagConstraints();
