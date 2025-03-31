@@ -53,6 +53,10 @@ public class Main {
 
         // Example cards
         List<Card> cards = new ArrayList<>();
+        database.clear();
+        database.addGame(440);
+        System.out.println(database.isInDatabase(440)+ "");
+        System.out.println(database.isInDatabase(730) + "");
 
         // had to change it so passes the `cards` list directly into the `catalogUI` constructor
         SwingUtilities.invokeLater(() -> new catalogUI(cards, database, reviews));
