@@ -241,18 +241,24 @@ public class catalogUI extends JFrame {
             if (!steamIDText.isEmpty()) {
                 try {
                     int steamID = Integer.parseInt(steamIDText);
-                    database.addGame(steamID);  // Use existing CatalogDatabase instance
+                    if(!database.isInDatabase(steamID)) {
 
-                    String[] gameInfo = database.fetchAllGameInfo(steamID);
-                    if (gameInfo != null && gameInfo.length >= 4) {
-                        Card newCard = new Card(gameInfo[1], new String[]{gameInfo[5]}, gameInfo[0], gameInfo[2], gameInfo[3], gameInfo[6], gameInfo[7], gameInfo[4]);
-                        gameList.add(newCard);
-                        displayedList = gameList; // Update displayedList to include the new game
-                        displayGames(); // Refresh the UI
+                        database.addGame(steamID);  // Use existing CatalogDatabase instance
+                        String[] gameInfo = database.fetchAllGameInfo(steamID);
+                        if (gameInfo != null && gameInfo.length >= 4) {
+                            Card newCard = new Card(gameInfo[1], new String[]{gameInfo[5]}, gameInfo[0], gameInfo[2], gameInfo[3], gameInfo[6], gameInfo[7], gameInfo[4]);
+                            gameList.add(newCard);
+                            displayedList = gameList; // Update displayedList to include the new game
+                            displayGames(); // Refresh the UI
 
-                        returnToMainScreen();
+                            returnToMainScreen();
+                            JOptionPane.showMessageDialog(this, "Game has been added succesfully", "Game Added", JOptionPane.WARNING_MESSAGE);
+
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Error fetching game info.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(this, "Error fetching game info.", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Game already in Cataloge", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Invalid Steam ID! Please enter a number.", "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -328,7 +334,7 @@ public class catalogUI extends JFrame {
                         }
                     }
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "Error fetching game info.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Game has been removed succesfully", "Game Removed", JOptionPane.WARNING_MESSAGE);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Error fetching game info.", "Error: Empty Field", JOptionPane.ERROR_MESSAGE);
