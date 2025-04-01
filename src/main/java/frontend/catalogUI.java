@@ -252,7 +252,7 @@ public class catalogUI extends JFrame {
                             displayGames(); // Refresh the UI
 
                             returnToMainScreen();
-                            JOptionPane.showMessageDialog(this, "Game has been added succesfully", "Game Added", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(this, "Game has been added succesfully", "Game Added", JOptionPane.INFORMATION_MESSAGE);
 
                         } else {
                             JOptionPane.showMessageDialog(this, "Error fetching game info.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -319,27 +319,39 @@ public class catalogUI extends JFrame {
 
             if (!steamIDText.isEmpty()) {
                 try {
+                    int steamID = Integer.parseInt(steamIDText);  // Parsing the Steam ID as integer
 
-                    int steamID = Integer.parseInt(steamIDText);
-                    // remove from database
+                    // Remove the game from the database
                     database.removeGame(steamID);
 
-                    // remove from displayedList
+                    // Remove the game from the displayed list
                     for (Card card : displayedList) {
                         if (Objects.equals(card.getId(), steamIDText)) {
                             gameList.remove(card);
-                            displayedList = gameList;
-                            displayGames();
-                            returnToMainScreen();
+                            displayedList = gameList;  // Update displayed list
+                            displayGames();  // Refresh the game display
+                            returnToMainScreen();  // Navigate back to main screen
+                            JOptionPane.showMessageDialog(this, "Game has been removed successfully", "Game Removed", JOptionPane.INFORMATION_MESSAGE);
+                            return;  // Exit after removal
                         }
                     }
+
+                    // If the game wasn't found in the displayed list
+                    JOptionPane.showMessageDialog(this, "Game not found in the displayed list", "Error", JOptionPane.ERROR_MESSAGE);
+
+                } catch (NumberFormatException ex) {
+                    // Handle invalid number format input
+                    JOptionPane.showMessageDialog(this, "Invalid Steam ID. Please enter a valid number.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "Game has been removed succesfully", "Game Removed", JOptionPane.WARNING_MESSAGE);
+                    // Catch any other unexpected errors
+                    JOptionPane.showMessageDialog(this, "Error removing game, please try again", "Unexpected Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Error fetching game info.", "Error: Empty Field", JOptionPane.ERROR_MESSAGE);
+                // Handle empty Steam ID field
+                JOptionPane.showMessageDialog(this, "Error fetching game info. Steam ID field is empty.", "Error: Empty Field", JOptionPane.ERROR_MESSAGE);
             }
         });
+
         // Back Button (Returns to Main Screen)
         gbc.gridx = 1;
         JButton backButton = new JButton("Back");
