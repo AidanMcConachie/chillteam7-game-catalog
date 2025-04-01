@@ -56,11 +56,19 @@ public class GameDetailsPanel extends JPanel {
 
         contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        JLabel genreLabel = new JLabel("Genres: " + String.join(", ", card.getGenres()));
-        genreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel genreLabel = new JLabel("Genres: " + String.join(", ", card.getGenres()).replaceAll("[\\[\\]\"]", " "));        genreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         genreLabel.setForeground(Color.WHITE);
 
-        JLabel developerPublisherLabel = new JLabel("Developers: " + String.join(", ", card.getDevelopers()) + "\t, Publishers: " + String.join(", ", card.getPublishers()));
+        JLabel developerPublisherLabel = new JLabel(
+                "Developers: " +
+                        (card.getDevelopers() != null ?
+                                String.join(", ", card.getDevelopers()).replaceAll("[\\[\\]\"]", "") :
+                                "N/A") +
+                        ", Publishers: " +
+                        (card.getPublishers() != null ?
+                                String.join(", ", card.getPublishers()).replaceAll("[\\[\\]\"]", "") :
+                                "N/A")
+        );
         developerPublisherLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         developerPublisherLabel.setForeground(Color.WHITE);
 

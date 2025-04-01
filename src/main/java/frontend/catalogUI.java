@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.awt.event.*;
 
 public class catalogUI extends JFrame {
     private JPanel cardContainer; // The panel of all the displayed games
@@ -75,8 +76,8 @@ public class catalogUI extends JFrame {
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
         sidePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        JButton addGameButton = new modernButton("Add Game");
-        JButton removeGameButton = new modernButton("Remove Game");
+        JButton addGameButton = new modernButton("Add");
+        JButton removeGameButton = new modernButton("Remove");
 
         addGameButton.setMaximumSize(new Dimension(100, 20));
         removeGameButton.setMaximumSize(new Dimension(100, 20));
@@ -127,6 +128,29 @@ public class catalogUI extends JFrame {
         JLabel titleLabel = new JLabel("Gavin's Games");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(Color.WHITE);
+
+        titleLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) { // used as refresher when search filtering
+
+                displayedList = gameList;
+                returnToMainScreen();
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                titleLabel.setForeground(Color.CYAN);  // change color when hovered
+                titleLabel.setText("<html><u>Gavin's Games</u></html>");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                titleLabel.setForeground(Color.WHITE); // reset color when mouse exits
+                titleLabel.setText("Gavin's Games");
+            }
+        });
+
         titlePanel.add(titleLabel);
 
         topPanel = new JPanel(new BorderLayout());
