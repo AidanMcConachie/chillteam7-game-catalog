@@ -1,18 +1,18 @@
 package backend;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SearchGames {
-    //Search for a game by name (case-insensitive)
     public static List<Card> searchByName(String query, List<Card> games) {
-        if (query == null || query.trim().isEmpty()) {
-            return games; // If search is empty, return full list
-        }
+        List<Card> results = new ArrayList<>();
+        String lowerQuery = query.toLowerCase();
 
-        String lowerCaseQuery = query.toLowerCase();
-        return games.stream()
-                .filter(game -> game.getName().toLowerCase().contains(lowerCaseQuery))
-                .collect(Collectors.toList());
+        for (Card card : games) {
+            if (card.getName().toLowerCase().startsWith(lowerQuery)) {
+                results.add(card);
+            }
+        }
+        return results;
     }
 }
