@@ -3,6 +3,27 @@
 2) Open up command prompt and ensure java and maven are installed by running: `java & maven`
 4) Run the program: `mvn compile exec:java -Dexec.mainClass="Main"`
 
+## General Info
+- Trello Board inidcates tasks failed to complete
+- Bugs: Duplicates in database
+
+## Project Retrospective:
+- What went well/what did you enjoy about the project?
+Team Working went great and we all enjoyed working with each other. No communication issues.
+- What would you do differently knowing what you know now?
+Not use Java Swing. Outdated and hard to work with compared to other web frameworks.
+- Regarding Process? Regarding Technology?
+Java was fine just java swing UI is annoying to work with.
+- Lessons learned?
+Communication is very important.
+- If you had to guess, what will be the most important thing you take away from the project?
+Teamwork and the Software Development Process ie. Building, Testing, Teamwork, etc.
+   
+# Burdown Chart
+![IMG_2776](https://github.com/user-attachments/assets/ff1d4b03-14a7-48e2-925b-45262f78c04a)
+
+---
+
 # Testing (4CB 3TB 3OB)
 | Test ID  | Method/Class                  | Inputs(s)                                                                 | Expected Output(s)           | Testing Approach | Assigned Team Member |
 |----------|-------------------------------|--------------------------------------------------------------------------|------------------------------|------------------|----------------------|
@@ -75,3 +96,4 @@ game-catalog/
 - Frontend leads and backend leads have the final say in their respective areas
 - If you get merge conflicts, run `git mergetool`
 - Commit often!
+
