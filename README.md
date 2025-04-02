@@ -2,6 +2,48 @@
 1) Navigate to the directory: `chillteam7-game-catalog`
 2) Open up command prompt and ensure java and maven are installed by running: `java & maven`
 4) Run the program: `mvn compile exec:java -Dexec.mainClass="Main"`
+
+## General Info
+- Trello Board inidcates tasks failed to complete
+- Bugs: Duplicates in database
+
+## Project Retrospective:
+- What went well/what did you enjoy about the project?
+Team Working went great and we all enjoyed working with each other. No communication issues.
+- What would you do differently knowing what you know now?
+Not use Java Swing. Outdated and hard to work with compared to other web frameworks.
+- Regarding Process? Regarding Technology?
+Java was fine just java swing UI is annoying to work with.
+- Lessons learned?
+Communication is very important.
+- If you had to guess, what will be the most important thing you take away from the project?
+Teamwork and the Software Development Process ie. Building, Testing, Teamwork, etc.
+   
+# Burdown Chart
+![IMG_2776](https://github.com/user-attachments/assets/ff1d4b03-14a7-48e2-925b-45262f78c04a)
+
+---
+
+# Testing (4CB 3TB 3OB)
+| Test ID  | Method/Class                  | Inputs(s)                                                                 | Expected Output(s)           | Testing Approach | Assigned Team Member |
+|----------|-------------------------------|--------------------------------------------------------------------------|------------------------------|------------------|----------------------|
+| UT-01-CB | Card (Constructor and Getters)| "Zelda", {"Adventure"}, "1", "A legend of Zelda game", "zelda.jpg"        | Getters return correct values| Automated (Junit)| Alexis               |
+| UT-02-CB | Card (Constructor and Getters)| null values for all fields                                                | Getters return null          | Automated (Junit)| Alexis               |
+| UT-03-CB | Card (Constructor and Getters)| "", [""], "", "", ""                                                      | Getters return empty values  | Automated (Junit)| Alexis               |
+| UT-04-CB | Card.toString()               | Card("Zelda", {"Adventure"}, "1", "A legend of Zelda game", "zelda.jpg")  | String contains correct values| Automated (Junit)| Alexis               |
+
+| Test ID   | Components Involved               | Preconditions                        | Steps                         | Expected Result                         | Assigned Team Member |
+|-----------|-----------------------------------|--------------------------------------|-------------------------------|-----------------------------------------|----------------------|
+| IT-01-TB  | catalogueUI & Card & Database     | Database has data or mock data.      | Run main                      | Cards appear in the catalogueUI         | Renuston             |
+| IT-02-TB  | catalogueUI                       | Database                             | Run main                      | Cards get                               | Manu                 |
+| IT-03-TB  | catalogueUI & Card & SortGame & Database | Database has data or mock data.      | Run main and apply sorting    | Cards sorted in correct order in catalogueUI | Tony                 |
+
+| Test ID  | Scenario            | Preconditions       | Steps                           | Expected outcome                                | Assigned Team Member |
+|----------|---------------------|---------------------|---------------------------------|------------------------------------------------|----------------------|
+| ST-01-OB | Sorting for games   | Program is running  | Apply sorting of choice         | UI should show to the user games in correct order | Alexis               |
+| ST-02-OB | Searching for games | Program is running  | Search for a game and apply search | UI should show to the user games with that name  | Alexis               |
+| ST-03-OB | Adding a game       | Program is running  | Click add game button           | UI should show the newly added game             | Alexis               |
+
 ---
 # Burndown Chart as of Finishing Iteration 2
 ![IMG_2737](https://github.com/user-attachments/assets/4d1141c0-d2de-4a02-923d-bab3967c4f6a)
