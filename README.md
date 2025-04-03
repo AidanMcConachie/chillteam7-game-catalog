@@ -26,7 +26,7 @@
 - If you had to guess, what will be the most important thing you take away from the project?
 1. Following trello board, meeting deadlines, analyzing our progress, just the whole process.
    
-# Burdown Chart
+# Burndown Chart
 ![IMG_2776](https://github.com/user-attachments/assets/ff1d4b03-14a7-48e2-925b-45262f78c04a)
 
 ---
