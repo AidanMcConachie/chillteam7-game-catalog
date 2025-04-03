@@ -11,13 +11,17 @@ clear(), deletes and creates the database, or "clears it" (void)
 
 package backend;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 
 
 public class CatalogDatabase {
     private static Connection con = null;
-    public static String catalogJdbcURL = "jdbc:sqlite:database/catalog.db";
+    private static final String JAR_DIR = new File(System.getProperty("user.dir")).getAbsolutePath();
+    private static final String DB_PATH = Paths.get(JAR_DIR, "database", "catalog.db").toString();
+    public static String catalogJdbcURL = "jdbc:sqlite:" + DB_PATH;
     SteamAPIFetcher fetcher = new SteamAPIFetcher();
 
     public CatalogDatabase() {

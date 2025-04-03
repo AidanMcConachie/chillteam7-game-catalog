@@ -8,13 +8,17 @@ clear() -> Deletes the reviews table and recreates it, effectively clearing all 
 
 package backend;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ReviewDatabase{
-    public static String reviewsJdbcURL = "jdbc:sqlite:database/reviews.db";
+    private static final String JAR_DIR = new File(System.getProperty("user.dir")).getAbsolutePath();
+    private static final String DB_PATH = Paths.get(JAR_DIR, "database", "reviews.db").toString();
+    public static String reviewsJdbcURL = "jdbc:sqlite:" + DB_PATH;
     public static Connection con;
     public ReviewDatabase() {}
     public static Connection getConnection() throws SQLException {
