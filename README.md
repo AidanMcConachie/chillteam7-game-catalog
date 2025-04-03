@@ -9,15 +9,22 @@
 
 ## Project Retrospective:
 - What went well/what did you enjoy about the project?
-Team Working went great and we all enjoyed working with each other. No communication issues.
+1. Team Working went great and we all enjoyed working with each other. No communication issues.
+2. Organized and broke up the assignement well for team programming.
+3. No one was slacking, responsabilities were met.
 - What would you do differently knowing what you know now?
-Not use Java Swing. Outdated and hard to work with compared to other web frameworks.
+1. Not use Java Swing. Outdated and hard to work with compared to other web frameworks.
+2. Understanding beforehand what we are using in the project.
+3. More testing before something was complete before we had Database issues related.
 - Regarding Process? Regarding Technology?
-Java was fine just java swing UI is annoying to work with.
+1. Java was fine just java swing UI is annoying to work with.
+2. Database was SQLite and worked well
+3. BE MORE CAREFULL WITH MERGES !!!!
 - Lessons learned?
-Communication is very important.
+1. Communication is very important when working within a group.
+2. The entire process of software development and how to proceed efficiently.
 - If you had to guess, what will be the most important thing you take away from the project?
-Teamwork and the Software Development Process ie. Building, Testing, Teamwork, etc.
+1. Following trello board, meeting deadlines, analyzing our progress, just the whole process.
    
 # Burdown Chart
 ![IMG_2776](https://github.com/user-attachments/assets/ff1d4b03-14a7-48e2-925b-45262f78c04a)
