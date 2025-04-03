@@ -1,5 +1,5 @@
 # Running the Program
-1) Navigate to the directory: `chillteam7-game-catalog`
+1) Navigate to the directory: `cd ~/chillteam7-game-catalog`
 2) Open up command prompt and ensure java and maven are installed by running: `java & maven`
 4) Run the program: `mvn compile exec:java -Dexec.mainClass="Main"`
 
